@@ -25,7 +25,10 @@ public sealed class OutlawGlobalState : State<Outlaw>
     {
         if (Random.Range(0.0f, 1.0f) < 0.05f)
         {
-            agent.ChangeState(RobBank.Instance);
+            agent.FindPath(Tiles.Bank);
+            agent.nextState = RobBank.Instance;
+            agent.ChangeState(MovementState.Instance);
+            //agent.ChangeState(RobBank.Instance);
         }
     }
 

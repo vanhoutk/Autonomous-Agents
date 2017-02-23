@@ -2,16 +2,21 @@
 
 public class Outlaw : Agent
 {
-    private AStarSearch currentPath;
     private int goldCarried = 0;
     private GameObject controller;
     private StateMachine<Outlaw> stateMachine;
-    private Tiles location;
-    private Tiles destination;
 
     public delegate void BankRobbery();
     public static event BankRobbery OnBankRobbery;
+
+    public AStarSearch currentPath;
+    public int moveDelay = 5;
     public SquareGrid mapGrid;
+    public State<Outlaw> previousState;
+    public State<Outlaw> nextState;
+    public Tiles destination;
+    public Tiles location;
+    public Tiles previousLocation;
     public TilingSystem tilingSystem;
     public Vector2 currentLocation;
     public Vector2 targetLocation;

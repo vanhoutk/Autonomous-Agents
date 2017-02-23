@@ -51,6 +51,9 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -65,6 +68,9 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
@@ -89,9 +95,11 @@
     <Compile Include="Assets\Scripts\Agents\MinerStates\GoHomeAndSleepTilRested.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\QuenchThirst.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\VisitBankAndDepositGold.cs" />
+    <Compile Include="Assets\Scripts\Agents\Movement.cs" />
     <Compile Include="Assets\Scripts\Agents\Outlaw.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\LurkInCamp.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\LurkInCemetery.cs" />
+    <Compile Include="Assets\Scripts\Agents\OutlawStates\MovementState.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawGlobalState.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\RobBank.cs" />
     <Compile Include="Assets\Scripts\Agents\State.cs" />
