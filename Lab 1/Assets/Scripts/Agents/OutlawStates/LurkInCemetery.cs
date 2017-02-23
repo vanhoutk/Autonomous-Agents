@@ -27,7 +27,7 @@ public sealed class LurkInCemetery : State<Outlaw>
 
     public override void Execute(Outlaw agent)
     {
-        if (Random.Range(0.0f, 1.0f) < 0.2f)
+        if (Random.Range(0.0f, 1.0f) < 0.05f)
         {
             Debug.Log("Outlaw: Gonna go lurk in my camp!");
             agent.ChangeState(LurkInCamp.Instance);

@@ -105,6 +105,7 @@
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPool.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPooledRigidbody.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPooledRigidbody2D.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding.cs" />
     <Compile Include="Assets\Scripts\Tiling\TileSprite.cs" />
     <Compile Include="Assets\Scripts\Tiling\Tiles.cs" />
     <Compile Include="Assets\Scripts\Tiling\TilingSystem.cs" />

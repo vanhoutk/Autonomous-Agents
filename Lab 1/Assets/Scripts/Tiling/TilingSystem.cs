@@ -12,11 +12,12 @@ public class TilingSystem : MonoBehaviour
     public List<TileSprite> tileSprites;
     public List<Vector2> locations;
 	public Sprite defaultImage;
+    public SquareGrid mapGrid;
 	public Vector2 CurrentPosition;
     public Vector2 MapSize;
     public Vector2 ViewPortSize;
 
-    private float tileSize = 3f;
+    private float tileSize = 1f;
 
     private GameObject controller;
     private GameObject tileContainer;
@@ -53,9 +54,9 @@ public class TilingSystem : MonoBehaviour
         locations.Add(new Vector2(0, 0)); // Mountains
 
         // Initially make all tiles plain tiles
-        for (var y = 0; y < MapSize.y - 1; y++)
+        for (var y = 0; y < MapSize.y; y++)
         {
-            for (var x = 0; x < MapSize.x - 1; x++)
+            for (var x = 0; x < MapSize.x; x++)
             {
                 _map[x, y] = new TileSprite(FindTile(Tiles.Plains));
             }
@@ -64,26 +65,28 @@ public class TilingSystem : MonoBehaviour
         // Add Mountain tiles
         for (var i = 0; i < MapSize.x * 2; i++)
         {
-            int randomX = UnityEngine.Random.Range(0, (int) MapSize.x - 1);
-            int randomY = UnityEngine.Random.Range(0, (int) MapSize.x - 1);
+            int randomX = UnityEngine.Random.Range(0, (int) MapSize.x);
+            int randomY = UnityEngine.Random.Range(0, (int) MapSize.x);
 
             _map[randomX, randomY] = new TileSprite(FindTile(Tiles.Mountains));
+
+            mapGrid.mountains.Add(new Node(randomX, randomY));
         }
 
         // Add the unique locations
         for (Tiles i = Tiles.Shack; i < Tiles.NUMBER_OF_TILES; i++)
         {
-            int randX = UnityEngine.Random.Range(0, (int)MapSize.x - 1);
-            int randY = UnityEngine.Random.Range(0, (int)MapSize.x - 1);
+            int randX = UnityEngine.Random.Range(0, (int)MapSize.x);
+            int randY = UnityEngine.Random.Range(0, (int)MapSize.x);
 
             while (_map[randX, randY].tileType != Tiles.Plains)
             {
-                randX = UnityEngine.Random.Range(0, (int)MapSize.x - 1);
-                randY = UnityEngine.Random.Range(0, (int)MapSize.x - 1);
+                randX = UnityEngine.Random.Range(0, (int)MapSize.x);
+                randY = UnityEngine.Random.Range(0, (int)MapSize.x);
             }
 
             _map[randX, randY] = new TileSprite(FindTile(i));
-            locations.Add(new Vector2((randX - CurrentPosition.x) * tileSize, (randY - CurrentPosition.y) * tileSize)); 
+            locations.Add(new Vector2((randX) * tileSize, (randY) * tileSize)); 
         }
     }
 
@@ -99,12 +102,12 @@ public class TilingSystem : MonoBehaviour
         tileContainer = LeanPool.Spawn (tileContainerPrefab);
 
 		
-		var viewOffsetX = ViewPortSize.x;
-		var viewOffsetY = ViewPortSize.y;
+		var viewOffsetX = ViewPortSize.x/2;
+		var viewOffsetY = ViewPortSize.y/2;
 
-		for (var y = -viewOffsetY; y < viewOffsetY; y++)
+		for (var y = -viewOffsetY; y <= viewOffsetY; y++)
         {
-			for (var x = -viewOffsetX; x < viewOffsetX; x++)
+			for (var x = -viewOffsetX; x <= viewOffsetX; x++)
             {
 				var tX = x * tileSize;
 				var tY = y * tileSize;
@@ -116,9 +119,9 @@ public class TilingSystem : MonoBehaviour
 					continue;
 				if (iY < 0)
 					continue;
-				if (iX > MapSize.x - 2)
+				if (iX > MapSize.x - 1)
 					continue;
-				if (iY > MapSize.y - 2)
+				if (iY > MapSize.y - 1)
 					continue;
 
 				var tile = LeanPool.Spawn (tilePrefab);
@@ -138,8 +141,12 @@ public class TilingSystem : MonoBehaviour
     {
         controller = GameObject.Find("Controller");
         _map = new TileSprite[(int)MapSize.x, (int)MapSize.y];
+        mapGrid = new SquareGrid((int)MapSize.x, (int)MapSize.y);
 		DefaultTiles ();
 		SetTiles ();
 		AddTilesToMap ();
-	}
+
+        double testCost = this.mapGrid.Cost(new Node(0, 0), new Node(0, 1));
+        Debug.Log("TilingSystem: testCost = " + testCost);
+    }
 }

@@ -21,7 +21,16 @@ public sealed class LurkInCamp : State<Outlaw>
         if (agent.GetLocation() != Tiles.OutlawCamp)
         {
             Debug.Log("Outlaw: Walking to my camp!");
-            agent.ChangeLocation(Tiles.OutlawCamp);
+            //agent.ChangeLocation(Tiles.OutlawCamp);
+
+            agent.FindPath(Tiles.OutlawCamp);
+            agent.MoveAlongPath();
+
+            Debug.Log("Outlaw: Found the path to my camp!");
+            while (agent.GetLocation() != Tiles.OutlawCamp)
+            {
+                agent.MoveAlongPath();
+            }
         }
     }
 

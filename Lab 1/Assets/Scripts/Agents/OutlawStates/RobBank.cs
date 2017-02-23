@@ -28,7 +28,7 @@ public sealed class RobBank : State<Outlaw>
     public override void Execute(Outlaw agent)
     {
         agent.RobBank();
-        Debug.Log("Outlaw: Just robbed the bank! Now I have " + agent.GetGoldCarried() + " gold!");
+        //Debug.Log("Outlaw: Just robbed the bank! Now I have " + agent.GetGoldCarried() + " gold!");
         agent.GetFSM().RevertToPreviousState();
     }
 
