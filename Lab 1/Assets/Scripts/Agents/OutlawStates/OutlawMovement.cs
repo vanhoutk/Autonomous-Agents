@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public sealed class MovementState : State<Outlaw>
+public sealed class OutlawMovement : State<Outlaw>
 {
-    static readonly MovementState instance = new MovementState();
+    static readonly OutlawMovement instance = new OutlawMovement();
 
-    public static MovementState Instance
+    public static OutlawMovement Instance
     {
         get
         {
@@ -12,8 +12,8 @@ public sealed class MovementState : State<Outlaw>
         }
     }
 
-    static MovementState() { }
-    private MovementState() { }
+    static OutlawMovement() { }
+    private OutlawMovement() { }
 
     public override void Enter(Outlaw agent)
     {
@@ -25,7 +25,7 @@ public sealed class MovementState : State<Outlaw>
         agent.moveDelay--;
         if(agent.moveDelay == 0)
         {
-            agent.moveDelay = 5;
+            agent.moveDelay = 10;
             Node currentNode = new Node((int)agent.currentLocation.x, (int)agent.currentLocation.y);
 
             Node nextNode = new Node((int)agent.targetLocation.x, (int)agent.targetLocation.y);
@@ -33,12 +33,16 @@ public sealed class MovementState : State<Outlaw>
 
             while (!parentNode.Equals(currentNode))
             {
+                TileSprite pathTile = agent.tilingSystem.GetTile(nextNode.x, nextNode.y);
+                pathTile.SetPathColor(nextNode.x, nextNode.y, agent.tilingSystem.MapSize.y);
                 nextNode = parentNode;
                 parentNode = agent.currentPath.cameFrom[nextNode];
             }
 
             agent.currentLocation = new Vector2(nextNode.x, nextNode.y);
             agent.transform.position = new Vector3(agent.currentLocation.x - agent.tilingSystem.CurrentPosition.x, agent.currentLocation.y - agent.tilingSystem.CurrentPosition.y, 0);
+            TileSprite visitedTile = agent.tilingSystem.GetTile(nextNode.x, nextNode.y);
+            visitedTile.ClearPathColor(nextNode.x, nextNode.y, agent.tilingSystem.MapSize.y);
             if (agent.currentLocation == agent.targetLocation)
             {
                 agent.location = agent.destination;

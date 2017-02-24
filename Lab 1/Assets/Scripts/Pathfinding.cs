@@ -71,10 +71,8 @@ public class SquareGrid : WeightedGraph<Node>
 
     public IEnumerable<Node> Neighbors(Node id)
     {
-        Debug.Log("Pathfinding: Inside Neighbors");
         foreach (var dir in DIRECTIONS)
         {
-            Debug.Log("Pathfinding: Inside Neighbors foreach");
             Node next = new Node(id.x + dir.x, id.y + dir.y);
             if (InBounds(next)/* && Passable(next)*/)
             {
@@ -91,8 +89,8 @@ public class Tuple<T1, T2>
 
     internal Tuple(T1 item1, T2 item2)
     {
-        this.Item1 = item1;
-        this.Item2 = item2;
+        Item1 = item1;
+        Item2 = item2;
     }
 }
 
@@ -230,16 +228,16 @@ public class AStarSearch
 
             //closedSet.Enqueue(current, 0);
 
-            Debug.Log("Pathfinding: Before foreach");
-            Debug.Log("Pathfinding: Start - " + start.x + ", " + start.y);
-            Debug.Log("Pathfinding: Goal - " + goal.x + ", " + goal.y);
-            Debug.Log("Pathfinding: Current - " + current.x + ", " + current.y);
+            //Debug.Log("Pathfinding: Before foreach");
+            //Debug.Log("Pathfinding: Start - " + start.x + ", " + start.y);
+            //Debug.Log("Pathfinding: Goal - " + goal.x + ", " + goal.y);
+            //Debug.Log("Pathfinding: Current - " + current.x + ", " + current.y);
             double testCost = graph.Cost(current, new Node(current.x, current.y + 1));
-            Debug.Log("Pathfinding: testCost = " + testCost);
+            //Debug.Log("Pathfinding: testCost = " + testCost);
 
             foreach (var next in graph.Neighbors(current))
             {
-                Debug.Log("Pathfinding: Inside foreach");
+                //Debug.Log("Pathfinding: Inside foreach");
 
                 double newCost = gScore[current] + graph.Cost(current, next);
 

@@ -20,11 +20,11 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
     {
         // If the miner is not already located at the gold mine, he must
         // change location to the gold mine
-        if(agent.GetLocation() != Tiles.GoldMine)
-        {
+        //if(agent.GetLocation() != Tiles.GoldMine)
+        //{
             Debug.Log("Miner: Walkin' to the gold mine...");
-            agent.ChangeLocation(Tiles.GoldMine);
-        }
+        //    agent.ChangeLocation(Tiles.GoldMine);
+        //}
     }
 
     public override void Execute(Miner agent)
@@ -39,17 +39,32 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
         // If enough gold mined, go and put it in the bank
         if (agent.PocketsFull())
         {
-            agent.ChangeState(VisitBankAndDepositGold.Instance);
+            agent.FindPath(Tiles.Bank);
+            agent.nextState = VisitBankAndDepositGold.Instance;
+            agent.ChangeState(MinerMovement.Instance);
+            //agent.ChangeState(VisitBankAndDepositGold.Instance);
         }
         // If thirsty go and get a whiskey
         if (agent.Thirsty())
         {
-            agent.ChangeState(QuenchThirst.Instance);
+            agent.FindPath(Tiles.Saloon);
+            agent.nextState = QuenchThirst.Instance;
+            agent.ChangeState(MinerMovement.Instance);
+            //agent.ChangeState(QuenchThirst.Instance);
+        }
+
+        if (agent.Fatigued())
+        {
+            agent.FindPath(Tiles.Shack);
+            agent.nextState = GoHomeAndSleepTilRested.Instance;
+            agent.ChangeState(MinerMovement.Instance);
         }
     }
 
     public override void Exit(Miner agent)
     {
+        agent.previousState = Instance;
+        agent.previousLocation = agent.location;
         Debug.Log("Miner: Ah'm leavin' the gold mine with mah pockets full o' sweet gold");
     }
 }

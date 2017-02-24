@@ -20,11 +20,11 @@ public sealed class QuenchThirst : State<Miner>
     {
         // If the miner is not already located at the gold mine, he must
         // change location to the gold mine
-        if (agent.GetLocation() != Tiles.Saloon)
-        {
+        //if (agent.GetLocation() != Tiles.Saloon)
+        //{
             Debug.Log("Miner: Boy, ah sure is thirsty! Walking to the saloon");
-            agent.ChangeLocation(Tiles.Saloon);
-        }
+        //    agent.ChangeLocation(Tiles.Saloon);
+        //}
     }
 
     public override void Execute(Miner agent)
@@ -33,7 +33,9 @@ public sealed class QuenchThirst : State<Miner>
         {
             agent.BuyAndDrinkWhiskey();
             Debug.Log("Miner: That's mighty fine sippin liquer!");
-            agent.ChangeState(EnterMineAndDigForNugget.Instance);
+            agent.FindPath(Tiles.GoldMine);
+            agent.nextState = EnterMineAndDigForNugget.Instance;
+            agent.ChangeState(MinerMovement.Instance);
         }
         else
         {
@@ -44,6 +46,8 @@ public sealed class QuenchThirst : State<Miner>
 
     public override void Exit(Miner agent)
     {
+        agent.previousState = Instance;
+        agent.previousLocation = agent.location;
         Debug.Log("Miner: Leavin' the saloon, feelin' good!");
     }
 }

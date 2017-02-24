@@ -10,7 +10,7 @@ public class Outlaw : Agent
     public static event BankRobbery OnBankRobbery;
 
     public AStarSearch currentPath;
-    public int moveDelay = 5;
+    public int moveDelay = 10;
     public SquareGrid mapGrid;
     public State<Outlaw> previousState;
     public State<Outlaw> nextState;

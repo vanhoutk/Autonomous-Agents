@@ -3,7 +3,7 @@
 public class BobGeneric : AgentGeneric<BobGeneric> {
 
 	public void Awake () {
-		this.stateMachine = new StateMachineGeneric<BobGeneric>();
-		this.stateMachine.Init(this, WaitStateGeneric<BobGeneric>.Instance);
+        stateMachine = new StateMachineGeneric<BobGeneric>();
+        stateMachine.Init(this, WaitStateGeneric<BobGeneric>.Instance);
 	}
 }

@@ -11,27 +11,27 @@ abstract public class AgentGeneric <T> : MonoBehaviour {
 
     public void Update()
     {
-        this.stateMachine.Update();
+        stateMachine.Update();
     }
 
     public void CreateTime()
     {
-        this.createdTime++;
-        this.waitedTime = 0;
+        createdTime++;
+        waitedTime = 0;
     }
 
     public void IncreaseWaitedTime(int amount)
     {
-        this.waitedTime += amount;
+        waitedTime += amount;
     }
 
     public bool WaitedLongEnough()
     {
-        return this.waitedTime >= WAIT_TIME;
+        return waitedTime >= WAIT_TIME;
     }
 
     public void ChangeState(StateGeneric<T> state)
     {
-        this.stateMachine.ChangeState(state);
+        stateMachine.ChangeState(state);
     }
 }

@@ -36,8 +36,8 @@ public sealed class RobBank : State<Outlaw>
 
     public override void Exit(Outlaw agent)
     {
-        agent.previousState = Instance;
-        agent.previousLocation = Tiles.Bank;
+        //agent.previousState = Instance;
+        //agent.previousLocation = Tiles.Bank;
         Debug.Log("Outlaw: Leaving the bank!");
     }
 }

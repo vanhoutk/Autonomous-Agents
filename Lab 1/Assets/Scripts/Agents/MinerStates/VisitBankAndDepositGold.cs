@@ -49,6 +49,8 @@ public sealed class VisitBankAndDepositGold : State<Miner>
 
     public override void Exit(Miner agent)
     {
+        agent.previousState = Instance;
+        agent.previousLocation = agent.location;
         Debug.Log("Miner: Leavin' the bankt.");
     }
 }

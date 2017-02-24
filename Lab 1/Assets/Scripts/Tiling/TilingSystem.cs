@@ -33,6 +33,11 @@ public class TilingSystem : MonoBehaviour
         return null;
     }
 
+    public TileSprite GetTile(int x, int y)
+    {
+        return _map[x, y];
+    }
+
 	// Create a map of size MapSize of unset tiles
 	private void DefaultTiles()
     {
@@ -146,7 +151,7 @@ public class TilingSystem : MonoBehaviour
 		SetTiles ();
 		AddTilesToMap ();
 
-        double testCost = this.mapGrid.Cost(new Node(0, 0), new Node(0, 1));
+        double testCost = mapGrid.Cost(new Node(0, 0), new Node(0, 1));
         Debug.Log("TilingSystem: testCost = " + testCost);
     }
 }

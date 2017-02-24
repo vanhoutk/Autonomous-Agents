@@ -41,7 +41,7 @@ public sealed class LurkInCamp : State<Outlaw>
             Debug.Log("Outlaw: Gonna go lurk in the cemetery!");
             agent.FindPath(Tiles.Cemetery);
             agent.nextState = LurkInCemetery.Instance;
-            agent.ChangeState(MovementState.Instance);
+            agent.ChangeState(OutlawMovement.Instance);
             //agent.ChangeState(LurkInCemetery.Instance);
         }
         else
@@ -52,8 +52,8 @@ public sealed class LurkInCamp : State<Outlaw>
 
     public override void Exit(Outlaw agent)
     {
-        agent.previousState = Instance;
-        agent.previousLocation = Tiles.OutlawCamp;
+        //agent.previousState = Instance;
+        //agent.previousLocation = agent.location;
         Debug.Log("Leaving my camp...");
     }
 }

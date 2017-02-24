@@ -6,22 +6,22 @@ public class Else : MonoBehaviour
 
     public void Awake()
     {
-        this.stateMachine = new StateMachine<Else>();
+        stateMachine = new StateMachine<Else>();
         //this.stateMachine.Init(this, WaitState.Instance);
     }
 
     public void ChangeState(State<Else> state)
     {
-        this.stateMachine.ChangeState(state);
+        stateMachine.ChangeState(state);
     }
 
     public void Update()
     {
-        this.stateMachine.Update();
+        stateMachine.Update();
     }
 
     StateMachine<Else> GetFSM()
     {
-        return this.stateMachine;
+        return stateMachine;
     }
 }
