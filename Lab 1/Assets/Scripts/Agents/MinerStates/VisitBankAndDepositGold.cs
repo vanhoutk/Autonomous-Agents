@@ -38,19 +38,25 @@ public sealed class VisitBankAndDepositGold : State<Miner>
         if (agent.WealthyEnough())
         {
             Debug.Log("Miner: WooHoo! Rich enough for now.");
-            agent.ChangeState(GoHomeAndSleepTilRested.Instance);
+            agent.FindPath(Tiles.Shack);
+            agent.nextState = GoHomeAndSleepTilRested.Instance;
+            agent.ChangeState(Movement<Miner>.Instance);
+            //agent.ChangeState(GoHomeAndSleepTilRested.Instance);
         }
 
         else
         {
-            agent.ChangeState(EnterMineAndDigForNugget.Instance);
+            agent.FindPath(Tiles.GoldMine);
+            agent.nextState = EnterMineAndDigForNugget.Instance;
+            agent.ChangeState(Movement<Miner>.Instance);
+            //agent.ChangeState(EnterMineAndDigForNugget.Instance);
         }
     }
 
     public override void Exit(Miner agent)
     {
-        agent.previousState = Instance;
-        agent.previousLocation = agent.location;
+        //agent.previousState = Instance;
+        //agent.previousLocation = agent.location;
         Debug.Log("Miner: Leavin' the bankt.");
     }
 }

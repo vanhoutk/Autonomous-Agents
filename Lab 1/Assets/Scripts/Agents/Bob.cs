@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class Bob : Agent
+public class Bob : Agent<Bob>
 {
 
-    private StateMachine<Bob> stateMachine;
+    //private StateMachine<Bob> stateMachine;
 
     public static int WAIT_TIME = 5;
     public int waitedTime = 0;
@@ -31,7 +31,7 @@ public class Bob : Agent
         waitedTime = 0;
     }
 
-    public void ChangeState(State<Bob> state)
+    /*public void ChangeState(State<Bob> state)
     {
         stateMachine.ChangeState(state);
     }
@@ -39,7 +39,7 @@ public class Bob : Agent
     public override void Update()
     {
         stateMachine.Update();
-    }
+    }*/
 
     StateMachine<Bob> GetFSM()
     {

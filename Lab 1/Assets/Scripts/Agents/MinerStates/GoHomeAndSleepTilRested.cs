@@ -34,7 +34,7 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
             Debug.Log("Miner: What a God darn fantastic nap! Time to find more gold.");
             agent.FindPath(Tiles.GoldMine);
             agent.nextState = EnterMineAndDigForNugget.Instance;
-            agent.ChangeState(MinerMovement.Instance);
+            agent.ChangeState(Movement<Miner>.Instance);
             //agent.ChangeState(EnterMineAndDigForNugget.Instance);
         }
         else
@@ -46,8 +46,8 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
 
     public override void Exit(Miner agent)
     {
-        agent.previousState = Instance;
-        agent.previousLocation = agent.location;
+        //agent.previousState = Instance;
+        //agent.previousLocation = agent.location;
         Debug.Log("Leavin' the house.");
     }
 }

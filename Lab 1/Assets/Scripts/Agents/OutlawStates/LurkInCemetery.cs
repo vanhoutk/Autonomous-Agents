@@ -32,7 +32,7 @@ public sealed class LurkInCemetery : State<Outlaw>
             Debug.Log("Outlaw: Gonna go lurk in my camp!");
             agent.FindPath(Tiles.OutlawCamp);
             agent.nextState = LurkInCamp.Instance;
-            agent.ChangeState(OutlawMovement.Instance);
+            agent.ChangeState(Movement<Outlaw>.Instance);
         }
         else
         {

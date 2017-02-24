@@ -151,6 +151,13 @@ public class TilingSystem : MonoBehaviour
 		SetTiles ();
 		AddTilesToMap ();
 
+        GameObject outlawObject = GameObject.Find("Jesse");
+        GameObject minerObject = GameObject.Find("Miner");
+        Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
+        outlaw.currentLocation = locations[(int)Tiles.OutlawCamp];
+        Miner miner = minerObject.GetComponent<Miner>();
+        miner.currentLocation = locations[(int)Tiles.Shack];
+
         double testCost = mapGrid.Cost(new Node(0, 0), new Node(0, 1));
         Debug.Log("TilingSystem: testCost = " + testCost);
     }

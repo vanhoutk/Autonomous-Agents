@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -78,13 +76,9 @@
   <ItemGroup>
     <Compile Include="Assets\EmptyScript.cs" />
     <Compile Include="Assets\Scripts\Agents\Agent.cs" />
-    <Compile Include="Assets\Scripts\Agents\AgentGeneric.cs" />
     <Compile Include="Assets\Scripts\Agents\Bob.cs" />
-    <Compile Include="Assets\Scripts\Agents\BobGeneric.cs" />
     <Compile Include="Assets\Scripts\Agents\BobStates\CreateState.cs" />
-    <Compile Include="Assets\Scripts\Agents\BobStates\CreateStateGeneric.cs" />
     <Compile Include="Assets\Scripts\Agents\BobStates\WaitState.cs" />
-    <Compile Include="Assets\Scripts\Agents\BobStates\WaitStateGeneric.cs" />
     <Compile Include="Assets\Scripts\Agents\Elsa.cs" />
     <Compile Include="Assets\Scripts\Agents\Miner.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\EnterMineAndDigForNugget.cs" />
@@ -96,13 +90,11 @@
     <Compile Include="Assets\Scripts\Agents\Outlaw.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\LurkInCamp.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\LurkInCemetery.cs" />
-    <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawMovement.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawGlobalState.cs" />
+    <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawMovement.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\RobBank.cs" />
     <Compile Include="Assets\Scripts\Agents\State.cs" />
-    <Compile Include="Assets\Scripts\Agents\StateGeneric.cs" />
     <Compile Include="Assets\Scripts\Agents\StateMachine.cs" />
-    <Compile Include="Assets\Scripts\Agents\StateMachineGeneric.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Examples\SimpleDelayedPooling.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Examples\SimplePoolBenchmark.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Examples\SimplePooling.cs" />

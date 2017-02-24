@@ -12,7 +12,6 @@ public interface WeightedGraph<T>
     IEnumerable<Node> Neighbors(Node id);
 }
 
-
 public struct Node
 {
     // Implementation notes: I am using the default Equals but it can
@@ -226,7 +225,7 @@ public class AStarSearch
                 break;
             }
 
-            //closedSet.Enqueue(current, 0);
+            closedSet.Enqueue(current, 0);
 
             //Debug.Log("Pathfinding: Before foreach");
             //Debug.Log("Pathfinding: Start - " + start.x + ", " + start.y);
@@ -242,7 +241,7 @@ public class AStarSearch
                 double newCost = gScore[current] + graph.Cost(current, next);
 
                 
-                /*if(openSet.Contains(next) && newCost < gScore[next])
+                if(openSet.Contains(next) && newCost < gScore[next])
                 {
                     openSet.Remove(next);
                 }
@@ -250,23 +249,23 @@ public class AStarSearch
                 {
                     closedSet.Remove(next);
                 }
-                else
-                {
-                    gScore[next] = newCost;
-                    double fScore = newCost + ManhattanHeuristic(next, goal);
-                    openSet.Enqueue(next, fScore);
-                    cameFrom[next] = current;
-                }*/
-                
-
-
-                if (!gScore.ContainsKey(next) || newCost < gScore[next])
+                else if(!openSet.Contains(next) && !closedSet.Contains(next))
                 {
                     gScore[next] = newCost;
                     double fScore = newCost + ManhattanHeuristic(next, goal);
                     openSet.Enqueue(next, fScore);
                     cameFrom[next] = current;
                 }
+                
+
+
+                /*if (!gScore.ContainsKey(next) || newCost < gScore[next])
+                {
+                    gScore[next] = newCost;
+                    double fScore = newCost + ManhattanHeuristic(next, goal);
+                    openSet.Enqueue(next, fScore);
+                    cameFrom[next] = current;
+                }*/
             }
         }
     }

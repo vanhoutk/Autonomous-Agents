@@ -41,7 +41,7 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
         {
             agent.FindPath(Tiles.Bank);
             agent.nextState = VisitBankAndDepositGold.Instance;
-            agent.ChangeState(MinerMovement.Instance);
+            agent.ChangeState(Movement<Miner>.Instance);
             //agent.ChangeState(VisitBankAndDepositGold.Instance);
         }
         // If thirsty go and get a whiskey
@@ -49,7 +49,7 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
         {
             agent.FindPath(Tiles.Saloon);
             agent.nextState = QuenchThirst.Instance;
-            agent.ChangeState(MinerMovement.Instance);
+            agent.ChangeState(Movement<Miner>.Instance);
             //agent.ChangeState(QuenchThirst.Instance);
         }
 
@@ -57,14 +57,14 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
         {
             agent.FindPath(Tiles.Shack);
             agent.nextState = GoHomeAndSleepTilRested.Instance;
-            agent.ChangeState(MinerMovement.Instance);
+            agent.ChangeState(Movement<Miner>.Instance);
         }
     }
 
     public override void Exit(Miner agent)
     {
-        agent.previousState = Instance;
-        agent.previousLocation = agent.location;
+        //agent.previousState = Instance;
+        //agent.previousLocation = agent.location;
         Debug.Log("Miner: Ah'm leavin' the gold mine with mah pockets full o' sweet gold");
     }
 }

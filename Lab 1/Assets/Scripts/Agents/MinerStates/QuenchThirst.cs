@@ -35,7 +35,7 @@ public sealed class QuenchThirst : State<Miner>
             Debug.Log("Miner: That's mighty fine sippin liquer!");
             agent.FindPath(Tiles.GoldMine);
             agent.nextState = EnterMineAndDigForNugget.Instance;
-            agent.ChangeState(MinerMovement.Instance);
+            agent.ChangeState(Movement<Miner>.Instance);
         }
         else
         {
@@ -46,8 +46,8 @@ public sealed class QuenchThirst : State<Miner>
 
     public override void Exit(Miner agent)
     {
-        agent.previousState = Instance;
-        agent.previousLocation = agent.location;
+        //agent.previousState = Instance;
+        //agent.previousLocation = agent.location;
         Debug.Log("Miner: Leavin' the saloon, feelin' good!");
     }
 }

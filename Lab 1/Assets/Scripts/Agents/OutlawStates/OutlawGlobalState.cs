@@ -23,14 +23,19 @@ public sealed class OutlawGlobalState : State<Outlaw>
 
     public override void Execute(Outlaw agent)
     {
-        if (Random.Range(0.0f, 1.0f) < 0.005f)
+        if(agent.nextState != RobBank.Instance)
         {
-            agent.previousLocation = agent.destination;
-            agent.previousState = agent.nextState;
-            agent.FindPath(Tiles.Bank);
-            agent.nextState = RobBank.Instance;
-            agent.ChangeState(OutlawMovement.Instance);
-            //agent.ChangeState(RobBank.Instance);
+            if (Random.Range(0.0f, 1.0f) < 0.005f)
+            {
+                if(agent.currentPath != null)
+                    agent.ClearCurrentPath();
+                agent.previousLocation = agent.destination;
+                agent.previousState = agent.nextState;
+                agent.FindPath(Tiles.Bank);
+                agent.nextState = RobBank.Instance;
+                agent.ChangeState(Movement<Outlaw>.Instance);
+                //agent.ChangeState(RobBank.Instance);
+            }
         }
     }
 

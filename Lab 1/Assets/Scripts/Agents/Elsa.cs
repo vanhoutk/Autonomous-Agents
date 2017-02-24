@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
-public class Else : MonoBehaviour
+public class Elsa : MonoBehaviour
 {
-    private StateMachine<Else> stateMachine;
+    private StateMachine<Elsa> stateMachine;
 
     public void Awake()
     {
-        stateMachine = new StateMachine<Else>();
+        stateMachine = new StateMachine<Elsa>();
         //this.stateMachine.Init(this, WaitState.Instance);
     }
 
-    public void ChangeState(State<Else> state)
+    public void ChangeState(State<Elsa> state)
     {
         stateMachine.ChangeState(state);
     }
@@ -20,7 +20,7 @@ public class Else : MonoBehaviour
         stateMachine.Update();
     }
 
-    StateMachine<Else> GetFSM()
+    StateMachine<Elsa> GetFSM()
     {
         return stateMachine;
     }

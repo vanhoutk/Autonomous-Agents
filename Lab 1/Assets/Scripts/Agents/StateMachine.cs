@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class StateMachine<T>
 {
-
     private T agent;
     private State<T> previousState;
     private State<T> globalState;

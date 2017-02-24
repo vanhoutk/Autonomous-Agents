@@ -1,25 +1,25 @@
 ﻿using UnityEngine;
 
-public class Outlaw : Agent
+public class Outlaw : Agent<Outlaw>
 {
     private int goldCarried = 0;
     private GameObject controller;
-    private StateMachine<Outlaw> stateMachine;
+    //private StateMachine<Outlaw> stateMachine;
 
     public delegate void BankRobbery();
     public static event BankRobbery OnBankRobbery;
 
-    public AStarSearch currentPath;
-    public int moveDelay = 10;
+    //public AStarSearch currentPath;
+    //public int moveDelay = 10;
     public SquareGrid mapGrid;
-    public State<Outlaw> previousState;
-    public State<Outlaw> nextState;
-    public Tiles destination;
-    public Tiles location;
-    public Tiles previousLocation;
-    public TilingSystem tilingSystem;
-    public Vector2 currentLocation;
-    public Vector2 targetLocation;
+    //public State<Outlaw> previousState;
+    //public State<Outlaw> nextState;
+    //public Tiles destination;
+    //public Tiles location;
+    //public Tiles previousLocation;
+    //public TilingSystem tilingSystem;
+    //public Vector2 currentLocation;
+    //public Vector2 targetLocation;
 
     public void Awake()
     {
@@ -30,7 +30,7 @@ public class Outlaw : Agent
         stateMachine.Init(this, LurkInCamp.Instance, OutlawGlobalState.Instance);
     }
 
-    public void ChangeState(State<Outlaw> state)
+    /*public void ChangeState(State<Outlaw> state)
     {
         stateMachine.ChangeState(state);
     }
@@ -43,7 +43,7 @@ public class Outlaw : Agent
     public Tiles GetLocation()
     {
         return location;
-    }
+    }*/
 
     public void FindPath(Tiles location)
     {
