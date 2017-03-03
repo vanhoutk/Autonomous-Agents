@@ -19,6 +19,7 @@ public struct Node
     // GetHashCode in a real project.
 
     public readonly int x, y;
+ 
     public Node(int x, int y)
     {
         this.x = x;
@@ -207,161 +208,59 @@ public class AStarSearch
         return (diagonalMovementCost * h_diagonal) + (straightMovementCost * (h_straight - 2 * h_diagonal));
     }
 
+    private Node SmallestNode(Dictionary<Node, double> set)
+    {
+        KeyValuePair<Node, double> smallest = set.ElementAt(0);
+        foreach (KeyValuePair<Node, double> item in set)
+        {
+            if (item.Value < smallest.Value)
+                smallest = item;
+        }
+        return smallest.Key;
+    }
+
     public AStarSearch(WeightedGraph<Node> graph, Node start, Node goal)
     {
-        var openSet = new PriorityQueue<Node>();
-        var closedSet = new PriorityQueue<Node>();
-        openSet.Enqueue(start, 0);
+        Dictionary<Node, double> openSet = new Dictionary<Node, double>(); //open 
+        Dictionary<Node, double> closedSet = new Dictionary<Node, double>(); //closed 
+
+        openSet.Add(start,0);
 
         cameFrom[start] = start;
         gScore[start] = 0;
 
         while (openSet.Count > 0)
         {
-            var current = openSet.Dequeue();
-
+            var current = SmallestNode(openSet);
             if (current.Equals(goal))
             {
                 break;
             }
 
-            closedSet.Enqueue(current, 0);
-
-            //Debug.Log("Pathfinding: Before foreach");
-            //Debug.Log("Pathfinding: Start - " + start.x + ", " + start.y);
-            //Debug.Log("Pathfinding: Goal - " + goal.x + ", " + goal.y);
-            //Debug.Log("Pathfinding: Current - " + current.x + ", " + current.y);
-            double testCost = graph.Cost(current, new Node(current.x, current.y + 1));
-            //Debug.Log("Pathfinding: testCost = " + testCost);
-
+            openSet.Remove(current);
+            closedSet.Add(current, 0);
+            
             foreach (var next in graph.Neighbors(current))
             {
-                //Debug.Log("Pathfinding: Inside foreach");
-
                 double newCost = gScore[current] + graph.Cost(current, next);
-
-                
-                if(openSet.Contains(next) && newCost < gScore[next])
+    
+                if (openSet.ContainsKey(next) && newCost < gScore[next])
                 {
                     openSet.Remove(next);
                 }
-                else if(closedSet.Contains(next) && newCost < gScore[next])
+                else if (closedSet.ContainsKey(next) && newCost < gScore[next])
                 {
                     closedSet.Remove(next);
                 }
-                else if(!openSet.Contains(next) && !closedSet.Contains(next))
+                else if (!openSet.ContainsKey(next) && !closedSet.ContainsKey(next))
                 {
                     gScore[next] = newCost;
                     double fScore = newCost + ManhattanHeuristic(next, goal);
-                    openSet.Enqueue(next, fScore);
+                    openSet.Add(next, fScore);
                     cameFrom[next] = current;
                 }
-                
 
-
-                /*if (!gScore.ContainsKey(next) || newCost < gScore[next])
-                {
-                    gScore[next] = newCost;
-                    double fScore = newCost + ManhattanHeuristic(next, goal);
-                    openSet.Enqueue(next, fScore);
-                    cameFrom[next] = current;
-                }*/
             }
         }
     }
 }
-
-
-
-
-//public class Pathfinding
-//{
-//    List<Vector2> A_Star(Vector2 start, Vector2 goal, Vector2 mapSize)
-//    {
-//        // The set of nodes already evaluated.
-//        List<Vector2> closedSet = new List<Vector2>(); // = { };
-//        // The set of currently discovered nodes that are not evaluated yet.
-//        // Initially, only the start node is known.
-//        List<Vector2> openSet = new List<Vector2>(); // := {start}
-//        openSet.Add(start);
-
-//        // For each node, which node it can most efficiently be reached from.
-//        // If a node can be reached from many nodes, cameFrom will eventually contain the
-//        // most efficient previous step.
-//        int[,] cameFrom;
-//        //cameFrom := the empty map
-
-//        // For each node, the cost of getting from the start node to that node.
-//        float[,] gScore = new float[(int)mapSize.x, (int)mapSize.y];
-//        for(int i = 0; i < mapSize.y; i++)
-//        {
-//            for(int j = 0; j < mapSize.x; j++)
-//            {
-//                gScore[j, i] = 10000.0f; //Infinity
-//            }
-//        }
-//        //gScore := map with default value of Infinity
-
-//        // The cost of going from start to start is zero.
-//        gScore[(int)start.x, (int)start.y] = 0.0f;
-
-
-//        // For each node, the total cost of getting from the start node to the goal
-//        // by passing by that node. That value is partly known, partly heuristic.
-//        float[,] fScore = new float[(int)mapSize.x, (int)mapSize.y];
-//        for (int i = 0; i < mapSize.y; i++)
-//        {
-//            for (int j = 0; j < mapSize.x; j++)
-//            {
-//                fScore[j, i] = 10000.0f; //Infinity
-//            }
-//        }
-//        //fScore := map with default value of Infinity
-
-//        // For the first node, that value is completely heuristic.
-//        fScore[(int)start.x, (int)start.y] = heuristic_cost_estimate(start, goal);
-
-//        while (openSet.Count() != 0) // is not empty
-//        {
-//            current:= the node in openSet having the lowest fScore[] value
-//            if current = goal
-//                return reconstruct_path(cameFrom, current)
-
-//            openSet.Remove(current)
-//            closedSet.Add(current)
-//            for each neighbor of current
-//                if neighbor in closedSet
-//                    continue		// Ignore the neighbor which is already evaluated.
-//                // The distance from start to a neighbor
-//                tentative_gScore:= gScore[current] + dist_between(current, neighbor)
-//                if neighbor not in openSet	// Discover a new node
-//                    openSet.Add(neighbor)
-//                else if tentative_gScore >= gScore[neighbor]
-//                    continue		// This is not a better path.
-
-//                // This path is the best until now. Record it!
-//                cameFrom[neighbor] := current
-//                gScore[neighbor] := tentative_gScore
-//                fScore[neighbor] := gScore[neighbor] + heuristic_cost_estimate(neighbor, goal)
-//        }
-
-//        return failure
-//    }
-
-//    float heuristic_cost_estimate(Vector2 a, Vector2 b)
-//    {
-//        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
-//    }
-
-//    List<Vector2> reconstruct_path(List<Vector2> cameFrom, Vector2 current)
-//    {
-//        List<Vector2> total_path = new List<Vector2>();
-//        total_path.Add(current);
-//        while (cameFrom.Contains(current))
-//        {
-//            current = cameFrom[current];
-//            total_path.Add(current);
-//        }
-//        return total_path;
-//    }
-//}
