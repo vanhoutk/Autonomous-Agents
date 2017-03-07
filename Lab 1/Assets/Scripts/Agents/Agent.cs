@@ -5,6 +5,7 @@ abstract public class Agent<T> : MonoBehaviour
 {
     public AStarSearch currentPath;
     public int moveDelay = 10;
+    public SquareGrid mapGrid;
     public State<T> previousState;
     public State<T> nextState;
     public StateMachine<T> stateMachine;

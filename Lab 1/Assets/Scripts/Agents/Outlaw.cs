@@ -2,24 +2,15 @@
 
 public class Outlaw : Agent<Outlaw>
 {
+    private bool alive = true;
     private int goldCarried = 0;
     private GameObject controller;
-    //private StateMachine<Outlaw> stateMachine;
 
     public delegate void BankRobbery();
     public static event BankRobbery OnBankRobbery;
 
-    //public AStarSearch currentPath;
-    //public int moveDelay = 10;
-    public SquareGrid mapGrid;
-    //public State<Outlaw> previousState;
-    //public State<Outlaw> nextState;
-    //public Tiles destination;
-    //public Tiles location;
-    //public Tiles previousLocation;
-    //public TilingSystem tilingSystem;
-    //public Vector2 currentLocation;
-    //public Vector2 targetLocation;
+    public delegate void OutlawDead(AgentTypes type);
+    public static event OutlawDead OnOutlawDead;
 
     public void Awake()
     {
@@ -28,22 +19,16 @@ public class Outlaw : Agent<Outlaw>
 
         stateMachine = new StateMachine<Outlaw>();
         stateMachine.Init(this, LurkInCamp.Instance, OutlawGlobalState.Instance);
+        Undertaker.OnBuriedBody += RespawnOutlaw;
+        Sheriff.OnSheriffShoots += TakeDamage;
     }
 
-    /*public void ChangeState(State<Outlaw> state)
+    public void ChangeLocation(Tiles location)
     {
-        stateMachine.ChangeState(state);
+        this.location = location;
+        currentLocation = tilingSystem.locations[(int)location];
+        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
-
-    public override void Update()
-    {
-        stateMachine.Update();
-    }
-
-    public Tiles GetLocation()
-    {
-        return location;
-    }*/
 
     public void FindPath(Tiles location)
     {
@@ -55,43 +40,6 @@ public class Outlaw : Agent<Outlaw>
         var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         currentPath = aStar;
         Debug.Log("Outlaw: A* done...");
-    }
-
-    public void MoveAlongPath()
-    {
-        Node currentNode = new Node((int)currentLocation.x, (int)currentLocation.y);
-
-        Node nextNode = new Node((int)targetLocation.x, (int)targetLocation.y);
-        Node parentNode = currentPath.cameFrom[nextNode];
-
-        while(!parentNode.Equals(currentNode))
-        {
-            nextNode = parentNode;
-            parentNode = currentPath.cameFrom[nextNode];
-        }
-
-        currentLocation = new Vector2(nextNode.x, nextNode.y);
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-        if (currentLocation == targetLocation)
-        {
-            location = destination;
-        }
-
-        /*Node nextNode = this.currentPath.cameFrom[new Node((int)this.currentLocation.x, (int)this.currentLocation.y)];
-        this.currentLocation = new Vector2(nextNode.x, nextNode.y);
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-        if (this.currentLocation == this.targetLocation)
-        {
-            this.location = this.destination;
-        }*/
-        //ChangeLocation(destination);
-    }
-
-    public void ChangeLocation(Tiles location)
-    {
-        this.location = location;
-        currentLocation = tilingSystem.locations[(int)location];
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
     public void AddToGoldCarried(int amount)
@@ -116,6 +64,36 @@ public class Outlaw : Agent<Outlaw>
         goldCarried += Random.Range(1, 10);
         if(OnBankRobbery != null)
             OnBankRobbery();
+    }
+
+    public void RespawnOutlaw(AgentTypes type)
+    {
+        if(type == AgentTypes.Outlaw)
+        {
+            alive = true;
+            location = Tiles.OutlawCamp;
+            currentLocation = tilingSystem.locations[(int)location];
+            transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
+            ChangeState(LurkInCamp.Instance);
+        }
+        else
+        {
+            Debug.Log("Outlaw: I hear there's a new Sheriff in town!");
+        }
+
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if(damage >= 0)
+            ShotBySheriff();
+    }
+
+    public void ShotBySheriff()
+    {
+        alive = false;
+        if (OnOutlawDead != null)
+            OnOutlawDead(AgentTypes.Outlaw);
     }
 
     public StateMachine<Outlaw> GetFSM()

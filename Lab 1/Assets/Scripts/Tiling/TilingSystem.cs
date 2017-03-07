@@ -19,7 +19,6 @@ public class TilingSystem : MonoBehaviour
 
     private float tileSize = 1f;
 
-    private GameObject controller;
     private GameObject tileContainer;
     private List<GameObject> _tiles = new List<GameObject>();
     private TileSprite[,] _map;
@@ -144,21 +143,31 @@ public class TilingSystem : MonoBehaviour
 
 	public void Start()
     {
-        controller = GameObject.Find("Controller");
         _map = new TileSprite[(int)MapSize.x, (int)MapSize.y];
         mapGrid = new SquareGrid((int)MapSize.x, (int)MapSize.y);
 		DefaultTiles ();
 		SetTiles ();
 		AddTilesToMap ();
 
+        // Set the initial locations of the outlaw and miner
+        // Ideally would do this within the classes, but miner and outlaw get created before the tiling system
         GameObject outlawObject = GameObject.Find("Jesse");
-        GameObject minerObject = GameObject.Find("Miner");
         Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
         outlaw.currentLocation = locations[(int)Tiles.OutlawCamp];
+
+        GameObject minerObject = GameObject.Find("Miner");
         Miner miner = minerObject.GetComponent<Miner>();
         miner.currentLocation = locations[(int)Tiles.Shack];
 
-        double testCost = mapGrid.Cost(new Node(0, 0), new Node(0, 1));
-        Debug.Log("TilingSystem: testCost = " + testCost);
+        GameObject sheriffObject = GameObject.Find("Wyatt");
+        Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
+        sheriff.currentLocation = locations[(int)Tiles.SheriffsOffice];
+
+        GameObject undertakerObject = GameObject.Find("Under");
+        Undertaker undertaker = undertakerObject.GetComponent<Undertaker>();
+        undertaker.currentLocation = locations[(int)Tiles.Undertakers];
+
+        //double testCost = mapGrid.Cost(new Node(0, 0), new Node(0, 1));
+        //Debug.Log("TilingSystem: testCost = " + testCost);
     }
 }

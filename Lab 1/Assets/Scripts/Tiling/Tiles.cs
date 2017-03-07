@@ -11,5 +11,7 @@ public enum Tiles {
     Cemetery,
     OutlawCamp,
     Saloon,
+    Undertakers,
+    SheriffsOffice,
     NUMBER_OF_TILES
 }

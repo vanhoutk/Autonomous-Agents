@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -76,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Assets\EmptyScript.cs" />
     <Compile Include="Assets\Scripts\Agents\Agent.cs" />
+    <Compile Include="Assets\Scripts\Agents\AgentTypes.cs" />
     <Compile Include="Assets\Scripts\Agents\Bob.cs" />
     <Compile Include="Assets\Scripts\Agents\BobStates\CreateState.cs" />
     <Compile Include="Assets\Scripts\Agents\BobStates\WaitState.cs" />
@@ -93,8 +96,17 @@
     <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawGlobalState.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawMovement.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\RobBank.cs" />
+    <Compile Include="Assets\Scripts\Agents\Sheriff.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\CheckLocation.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\FightOutlaw.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\SheriffGlobalState.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\WaitInSheriffOffice.cs" />
     <Compile Include="Assets\Scripts\Agents\State.cs" />
     <Compile Include="Assets\Scripts\Agents\StateMachine.cs" />
+    <Compile Include="Assets\Scripts\Agents\Undertaker.cs" />
+    <Compile Include="Assets\Scripts\Agents\UndertakerStates\BuryBody.cs" />
+    <Compile Include="Assets\Scripts\Agents\UndertakerStates\CollectBody.cs" />
+    <Compile Include="Assets\Scripts\Agents\UndertakerStates\WaitInUndertakers.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Examples\SimpleDelayedPooling.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Examples\SimplePoolBenchmark.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Examples\SimplePooling.cs" />
@@ -102,7 +114,7 @@
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPool.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPooledRigidbody.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPooledRigidbody2D.cs" />
-    <Compile Include="Assets\Scripts\Pathfinding.cs" />
+    <Compile Include="Assets\Scripts\PathFinding\Pathfinding.cs" />
     <Compile Include="Assets\Scripts\Tiling\TileSprite.cs" />
     <Compile Include="Assets\Scripts\Tiling\Tiles.cs" />
     <Compile Include="Assets\Scripts\Tiling\TilingSystem.cs" />

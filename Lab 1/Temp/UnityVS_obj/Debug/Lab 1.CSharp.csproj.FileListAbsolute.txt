@@ -1,0 +1,21 @@
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEditor.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.Analytics.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.HoloLens.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.Networking.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.PlaymodeTestsRunner.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.UI.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.VR.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.UI.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.Networking.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.PlaymodeTestsRunner.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.Analytics.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.HoloLens.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEngine.VR.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_bin\Debug\UnityEditor.xml
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_obj\Debug\Lab 1.CSharp.csprojResolveAssemblyReference.cache
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_obj\Debug\Assembly-CSharp.dll
+E:\Autonomous Labs\Lab 1\Temp\UnityVS_obj\Debug\Assembly-CSharp.pdb

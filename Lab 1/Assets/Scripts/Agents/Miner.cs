@@ -13,19 +13,6 @@ public class Miner : Agent<Miner>
     private int fatigue = 0;
 
     private GameObject controller;
-    //private StateMachine<Miner> stateMachine;
-
-    //public AStarSearch currentPath;
-    //public int moveDelay = 10;
-    public SquareGrid mapGrid;
-    //public State<Miner> previousState;
-    //public State<Miner> nextState;
-    //public Tiles destination;
-    //public Tiles location;
-    //public Tiles previousLocation;
-    //public TilingSystem tilingSystem;
-    //public Vector2 currentLocation;
-    //public Vector2 targetLocation;
 
     public void Awake()
     {
