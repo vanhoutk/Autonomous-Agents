@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 abstract public class Agent<T> : MonoBehaviour
 {
+    // Variables
     public AStarSearch currentPath;
+    public bool isAlive;
     public int moveDelay = 10;
     public SquareGrid mapGrid;
-    public State<T> previousState;
     public State<T> nextState;
+    public State<T> previousState;
     public StateMachine<T> stateMachine;
     public Tiles destination;
     public Tiles location;
@@ -16,10 +17,13 @@ abstract public class Agent<T> : MonoBehaviour
     public Vector2 currentLocation;
     public Vector2 targetLocation;
 
-    public void Update()
-    {
-        stateMachine.Update();
-    }
+    // Functions
+    /*
+     * public Tiles GetLocation()
+     * public void ChangeState(State<T> state)
+     * public void ClearCurrentPath()
+     * public void Update()
+     */
 
     public Tiles GetLocation()
     {
@@ -44,5 +48,10 @@ abstract public class Agent<T> : MonoBehaviour
             nextNode = parentNode;
             parentNode = currentPath.cameFrom[nextNode];
         }
+    }
+
+    public virtual void Update()
+    {
+        stateMachine.Update();
     }
 }

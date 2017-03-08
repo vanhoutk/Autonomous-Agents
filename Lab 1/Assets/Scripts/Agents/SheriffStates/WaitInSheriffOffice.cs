@@ -2,7 +2,6 @@
 
 public sealed class WaitInSheriffOffice : State<Sheriff>
 {
-
     static readonly WaitInSheriffOffice instance = new WaitInSheriffOffice();
 
     public static WaitInSheriffOffice Instance
@@ -23,6 +22,7 @@ public sealed class WaitInSheriffOffice : State<Sheriff>
 
     public override void Execute(Sheriff agent)
     {
+        // Do nothing until a new outlaw spawns
         Debug.Log("Sheriff: Just waiting in my office!");
     }
 

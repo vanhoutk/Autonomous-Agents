@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -79,22 +77,18 @@
     <Compile Include="Assets\EmptyScript.cs" />
     <Compile Include="Assets\Scripts\Agents\Agent.cs" />
     <Compile Include="Assets\Scripts\Agents\AgentTypes.cs" />
-    <Compile Include="Assets\Scripts\Agents\Bob.cs" />
-    <Compile Include="Assets\Scripts\Agents\BobStates\CreateState.cs" />
-    <Compile Include="Assets\Scripts\Agents\BobStates\WaitState.cs" />
-    <Compile Include="Assets\Scripts\Agents\Elsa.cs" />
+    <Compile Include="Assets\Scripts\Agents\GenericStates\Dead.cs" />
+    <Compile Include="Assets\Scripts\Agents\GenericStates\Movement.cs" />
     <Compile Include="Assets\Scripts\Agents\Miner.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\EnterMineAndDigForNugget.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\GoHomeAndSleepTilRested.cs" />
-    <Compile Include="Assets\Scripts\Agents\MinerStates\MinerMovement.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\QuenchThirst.cs" />
     <Compile Include="Assets\Scripts\Agents\MinerStates\VisitBankAndDepositGold.cs" />
-    <Compile Include="Assets\Scripts\Agents\Movement.cs" />
     <Compile Include="Assets\Scripts\Agents\Outlaw.cs" />
+    <Compile Include="Assets\Scripts\Agents\OutlawStates\FightSheriff.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\LurkInCamp.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\LurkInCemetery.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawGlobalState.cs" />
-    <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawMovement.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\RobBank.cs" />
     <Compile Include="Assets\Scripts\Agents\Sheriff.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\CheckLocation.cs" />

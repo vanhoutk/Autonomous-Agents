@@ -2,7 +2,6 @@
 
 public sealed class LurkInCamp : State<Outlaw>
 {
-
     static readonly LurkInCamp instance = new LurkInCamp();
 
     public static LurkInCamp Instance
@@ -18,20 +17,7 @@ public sealed class LurkInCamp : State<Outlaw>
 
     public override void Enter(Outlaw agent)
     {
-        //if (agent.GetLocation() != Tiles.OutlawCamp)
-        //{
-            Debug.Log("Outlaw: Arrived at my camp!");
-            //agent.ChangeLocation(Tiles.OutlawCamp);
-
-        //    agent.FindPath(Tiles.OutlawCamp);
-        //    agent.MoveAlongPath();
-
-            //Debug.Log("Outlaw: Found the path to my camp!");
-            //while (agent.GetLocation() != Tiles.OutlawCamp)
-            //{
-            //  agent.MoveAlongPath();
-            //}
-        //}
+        Debug.Log("Outlaw: Arrived at my camp!");
     }
 
     public override void Execute(Outlaw agent)
@@ -42,7 +28,6 @@ public sealed class LurkInCamp : State<Outlaw>
             agent.FindPath(Tiles.Cemetery);
             agent.nextState = LurkInCemetery.Instance;
             agent.ChangeState(Movement<Outlaw>.Instance);
-            //agent.ChangeState(LurkInCemetery.Instance);
         }
         else
         {
@@ -52,8 +37,6 @@ public sealed class LurkInCamp : State<Outlaw>
 
     public override void Exit(Outlaw agent)
     {
-        //agent.previousState = Instance;
-        //agent.previousLocation = agent.location;
-        Debug.Log("Leaving my camp...");
+        Debug.Log("Outlaw: Leaving my camp...");
     }
 }

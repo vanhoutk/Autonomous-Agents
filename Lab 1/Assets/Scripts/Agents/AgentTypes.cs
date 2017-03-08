@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum AgentTypes
+﻿public enum AgentTypes
 {
     Miner,
     Outlaw,
@@ -9,4 +6,3 @@ public enum AgentTypes
     Undertaker,
     NUMBER_OF_TYPES
 }
-

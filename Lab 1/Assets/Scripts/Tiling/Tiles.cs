@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum Tiles {
+﻿public enum Tiles {
     Unset,
     Plains,
     Mountains,

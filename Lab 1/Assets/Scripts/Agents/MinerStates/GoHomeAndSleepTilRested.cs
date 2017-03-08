@@ -2,7 +2,6 @@
 
 public sealed class GoHomeAndSleepTilRested : State<Miner>
 {
-
     static readonly GoHomeAndSleepTilRested instance = new GoHomeAndSleepTilRested();
 
     public static GoHomeAndSleepTilRested Instance
@@ -18,13 +17,7 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
 
     public override void Enter(Miner agent)
     {
-        // If the miner is not already located at the gold mine, he must
-        // change location to the gold mine
-        //if (agent.GetLocation() != Tiles.Shack)
-        //{
-            Debug.Log("Miner: Walkin' home");
-        //    agent.ChangeLocation(Tiles.Shack);
-        //}
+        Debug.Log("Miner: Walkin' home");
     }
 
     public override void Execute(Miner agent)
@@ -35,7 +28,6 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
             agent.FindPath(Tiles.GoldMine);
             agent.nextState = EnterMineAndDigForNugget.Instance;
             agent.ChangeState(Movement<Miner>.Instance);
-            //agent.ChangeState(EnterMineAndDigForNugget.Instance);
         }
         else
         {
@@ -46,8 +38,6 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
 
     public override void Exit(Miner agent)
     {
-        //agent.previousState = Instance;
-        //agent.previousLocation = agent.location;
-        Debug.Log("Leavin' the house.");
+        Debug.Log("Miner: Leavin' the house.");
     }
 }

@@ -2,7 +2,6 @@
 
 public sealed class CollectBody : State<Undertaker>
 {
-
     static readonly CollectBody instance = new CollectBody();
 
     public static CollectBody Instance
@@ -23,8 +22,9 @@ public sealed class CollectBody : State<Undertaker>
 
     public override void Execute(Undertaker agent)
     {
-        if (Random.Range(0.0f, 1.0f) < 0.2f)
+        if (Random.Range(0.0f, 1.0f) < 0.2f) // Take a random amount of "time" to deal with the body
         {
+            agent.CollectABody();
             Debug.Log("Undertaker: Body's all wrapped up!");
             agent.FindPath(Tiles.Cemetery);
             agent.nextState = BuryBody.Instance;

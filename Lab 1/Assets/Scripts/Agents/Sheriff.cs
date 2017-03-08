@@ -2,9 +2,12 @@
 
 public class Sheriff : Agent<Sheriff>
 {
-    private bool alive = true;
-    private int goldCarried = 0;
+    // Variables
     private GameObject controller;
+
+    // Messaging Events
+    public delegate void EncounterOutlaw();
+    public static event EncounterOutlaw OnEncounterOutlaw;
 
     public delegate void SheriffDead(AgentTypes type);
     public static event SheriffDead OnSheriffDead;
@@ -12,14 +15,45 @@ public class Sheriff : Agent<Sheriff>
     public delegate void SheriffShoots(int damage);
     public static event SheriffShoots OnSheriffShoots;
 
+    // Functions
+    /* 
+     * public StateMachine<Sheriff> GetFSM()
+     * public void Awake()
+     * public void ChangeLocation(Tiles location)
+     * public void FindPath(Tiles location)
+     *
+     * public void DespawnSheriff(AgentTypes type)
+     * public void RespawnSheriff(AgentTypes type)
+     * public void ShootOutlaw()
+     * public void ShotByOutlaw()
+     * public void YellAtOutlaw()
+     */
+
+    public StateMachine<Sheriff> GetFSM()
+    {
+        return stateMachine;
+    }
+
     public void Awake()
     {
+        isAlive = true;
+
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
 
         stateMachine = new StateMachine<Sheriff>();
         stateMachine.Init(this, CheckLocation.Instance, SheriffGlobalState.Instance);
+
+        // Subscribe to the undertakers messages
         Undertaker.OnBuriedBody += RespawnSheriff;
+        Undertaker.OnCollectedBody += DespawnSheriff;
+    }
+
+    public void ChangeLocation(Tiles location)
+    {
+        this.location = location;
+        currentLocation = tilingSystem.locations[(int)location];
+        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
     public void FindPath(Tiles location)
@@ -37,51 +71,36 @@ public class Sheriff : Agent<Sheriff>
         Debug.Log("Sheriff: A* done...");
     }
 
-    public void ChangeLocation(Tiles location)
+    public void DespawnSheriff(AgentTypes type)
     {
-        this.location = location;
-        currentLocation = tilingSystem.locations[(int)location];
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-    }
-
-    public void AddToGoldCarried(int amount)
-    {
-        goldCarried += amount;
-        if (goldCarried < 0)
-            goldCarried = 0;
-    }
-
-    public int GetGoldCarried()
-    {
-        return goldCarried;
-    }
-
-    public void SetGoldCarried(int value)
-    {
-        goldCarried = value;
+        if (type == AgentTypes.Sheriff)
+        {
+            GameObject sheriffObject = GameObject.Find("Wyatt");
+            SpriteRenderer sheriffRenderer = sheriffObject.GetComponent<SpriteRenderer>();
+            sheriffRenderer.enabled = false;
+        }
     }
 
     public void RespawnSheriff(AgentTypes type)
     {
         if (type == AgentTypes.Sheriff)
         {
-            alive = true;
-            location = Tiles.SheriffsOffice;
-            currentLocation = tilingSystem.locations[(int)location];
-            transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
+            GameObject sheriffObject = GameObject.Find("Wyatt");
+            SpriteRenderer sheriffRenderer = sheriffObject.GetComponent<SpriteRenderer>();
+            sheriffRenderer.enabled = true;
+
+            isAlive = true;
+
+            ChangeLocation(Tiles.SheriffsOffice);
             ChangeState(WaitInSheriffOffice.Instance);
         }
         else
         {
             Debug.Log("Sheriff: I hear there's a new Outlaw in town!");
-        }
-    }
 
-    public void ShotByOutlaw()
-    {
-        alive = false;
-        if (OnSheriffDead != null)
-            OnSheriffDead(AgentTypes.Sheriff);
+            if(stateMachine.GetState() != CheckLocation.Instance)
+                ChangeState(CheckLocation.Instance);
+        }
     }
 
     public void ShootOutlaw()
@@ -90,8 +109,16 @@ public class Sheriff : Agent<Sheriff>
             OnSheriffShoots(1);
     }
 
-    public StateMachine<Sheriff> GetFSM()
+    public void ShotByOutlaw()
     {
-        return stateMachine;
+        isAlive = false;
+        if (OnSheriffDead != null)
+            OnSheriffDead(AgentTypes.Sheriff);
+    }
+
+    public void YellAtOutlaw()
+    {
+        if (OnEncounterOutlaw != null)
+            OnEncounterOutlaw();
     }
 }

@@ -2,7 +2,6 @@
 
 public sealed class FightOutlaw : State<Sheriff>
 {
-
     static readonly FightOutlaw instance = new FightOutlaw();
 
     public static FightOutlaw Instance
@@ -25,7 +24,8 @@ public sealed class FightOutlaw : State<Sheriff>
     {
         agent.ShootOutlaw();
         Debug.Log("Sheriff: I just killed the outlaw!");
-        // Could add extra states to take outlaw's money, return it to the bank, then go to the saloon
+        // TODO: Add extra functions to take outlaw's money, return it to the bank, then go to the saloon
+        Debug.Log("Sheriff: Time to go back to my office!");
         agent.FindPath(Tiles.SheriffsOffice);
         agent.nextState = WaitInSheriffOffice.Instance;
         agent.ChangeState(Movement<Sheriff>.Instance);

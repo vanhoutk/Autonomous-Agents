@@ -23,8 +23,9 @@ public sealed class BuryBody : State<Undertaker>
 
     public override void Execute(Undertaker agent)
     {
-        if (Random.Range(0.0f, 1.0f) < 0.2f)
+        if (Random.Range(0.0f, 1.0f) < 0.2f) // Take a random amount of "time" to bury the body
         {
+            agent.BuryBody();
             Debug.Log("Undertaker: All done! Back to the office for me.");
             agent.FindPath(Tiles.Undertakers);
             agent.nextState = WaitInUndertakers.Instance;

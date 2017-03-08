@@ -2,7 +2,6 @@
 
 public sealed class WaitInUndertakers : State<Undertaker>
 {
-
     static readonly WaitInUndertakers instance = new WaitInUndertakers();
 
     public static WaitInUndertakers Instance
@@ -23,6 +22,7 @@ public sealed class WaitInUndertakers : State<Undertaker>
 
     public override void Execute(Undertaker agent)
     {
+        // Wait in office until a "death" causes a state change
         Debug.Log("Undertaker: Just waiting in my office!");
     }
 

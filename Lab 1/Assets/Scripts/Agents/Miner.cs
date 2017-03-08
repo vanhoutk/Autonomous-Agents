@@ -1,18 +1,84 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Miner : Agent<Miner>
 {
+    // Variables
     private const int maxGold = 3;
-    private const int maxThirst = 10;
+    private const int maxThirst = 50;
     private const int maxFatigue = 5;
     private const int comfortLevel = 5;
+
     private int goldCarried = 0;
     private int moneyInBank = 0;
     private int thirst = 0;
     private int fatigue = 0;
 
     private GameObject controller;
+
+    // Functions
+    /*
+     * public bool Fatigued()
+     * public bool PocketsFull()
+     * public bool Thirsty()
+     * public bool WealthyEnough()
+     *
+     * public int GetGoldCarried()
+     * public int GetMoneyInBank()
+     *
+     * public StateMachine<Miner> GetFSM()
+     * public void Awake()
+     * public void ChangeLocation(Tiles location) // Not used anymore
+     * public void FindPath(Tiles location)
+     * public void RespondToBankRobbery()
+     *
+     * public void AddToBank(int amount)
+     * public void AddToGoldCarried(int amount)
+     * public void BuyAndDrinkWhiskey()
+     * public void DecreaseFatigue()
+     * public void IncreaseFatigue()
+     * public void SetGoldCarried(int value)
+     */
+
+    public bool Fatigued()
+    {
+        return (fatigue >= maxFatigue);
+    }
+
+    public bool PocketsFull()
+    {
+        return (goldCarried >= maxGold);
+    }
+
+    public bool Thirsty()
+    {
+        return (thirst >= maxThirst);
+    }
+
+    public bool WealthyEnough()
+    {
+        return (moneyInBank >= comfortLevel);
+    }
+
+    public int GetGoldCarried()
+    {
+        return goldCarried;
+    }
+
+    public int GetMoneyInBank()
+    {
+        return moneyInBank;
+    }
+
+    public override void Update()
+    {
+        thirst++;
+        stateMachine.Update();
+    }
+
+    public StateMachine<Miner> GetFSM()
+    {
+        return stateMachine;
+    }
 
     public void Awake()
     {
@@ -24,22 +90,12 @@ public class Miner : Agent<Miner>
         Outlaw.OnBankRobbery += RespondToBankRobbery;
     }
 
-    /*public void ChangeState(State<Miner> state)
+    public void ChangeLocation(Tiles location)
     {
-        stateMachine.ChangeState(state);
+        this.location = location;
+        currentLocation = tilingSystem.locations[(int)location];
+        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
-
-    public override void Update()
-    {
-        if(stateMachine.GetState() != MinerMovement.Instance)
-            thirst++;
-        stateMachine.Update();
-    }
-
-    public Tiles GetLocation()
-    {
-        return location;
-    }*/
 
     public void FindPath(Tiles location)
     {
@@ -53,52 +109,15 @@ public class Miner : Agent<Miner>
         Debug.Log("Miner: A* done...");
     }
 
-    public void MoveAlongPath()
+    public void RespondToBankRobbery(int amount)
     {
-        Node currentNode = new Node((int)currentLocation.x, (int)currentLocation.y);
-
-        Node nextNode = new Node((int)targetLocation.x, (int)targetLocation.y);
-        Node parentNode = currentPath.cameFrom[nextNode];
-
-        while (!parentNode.Equals(currentNode))
-        {
-            nextNode = parentNode;
-            parentNode = currentPath.cameFrom[nextNode];
-        }
-
-        currentLocation = new Vector2(nextNode.x, nextNode.y);
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-        if (currentLocation == targetLocation)
-        {
-            location = destination;
-        }
+        moneyInBank -= amount;
+        Debug.Log("Miner: My Money!");
     }
 
-    public void ChangeLocation(Tiles location)
+    public void AddToBank(int amount)
     {
-        Debug.Log("Miner: location " + (int)location);
-        this.location = location;
-        Debug.Log("Miner: locations size " + tilingSystem.locations.Count);
-        if ((int)location < tilingSystem.locations.Count)
-        {
-            currentLocation = tilingSystem.locations[(int)location];
-            transform.position = new Vector3(currentLocation.x, currentLocation.y, 0);
-        }
-    }
-
-    public void IncreaseFatigue()
-    {
-        fatigue++;
-    }
-
-    public void DecreaseFatigue()
-    {
-        fatigue = 0;
-    }
-
-    public bool Fatigued()
-    {
-        return (fatigue >= maxFatigue);
+        moneyInBank += amount;
     }
 
     public void AddToGoldCarried(int amount)
@@ -108,54 +127,24 @@ public class Miner : Agent<Miner>
             goldCarried = 0;
     }
 
-    public int GetGoldCarried()
-    {
-        return goldCarried;
-    }
-
-    public void SetGoldCarried(int value)
-    {
-        goldCarried = value;
-    }
-
-    public bool PocketsFull()
-    {
-        return (goldCarried >= maxGold);
-    }
-
-    public void AddToBank(int amount)
-    {
-        moneyInBank += amount;
-    }
-
-    public int GetMoneyInBank()
-    {
-        return moneyInBank;
-    }
-
-    public void RespondToBankRobbery()
-    {
-        Debug.Log("Miner: My Money!");
-    }
-
-    public bool Thirsty()
-    {
-        return (thirst >= maxThirst);
-    }
-
     public void BuyAndDrinkWhiskey()
     {
         thirst = 0;
         moneyInBank -= 2;
     }
 
-    public bool WealthyEnough()
+    public void DecreaseFatigue()
     {
-        return (moneyInBank >= comfortLevel);
+        fatigue = 0;
     }
 
-    public StateMachine<Miner> GetFSM()
+    public void IncreaseFatigue()
     {
-        return stateMachine;
+        fatigue++;
+    }
+
+    public void SetGoldCarried(int value)
+    {
+        goldCarried = value;
     }
 }

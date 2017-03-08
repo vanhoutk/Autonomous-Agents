@@ -2,7 +2,6 @@
 
 public sealed class LurkInCemetery : State<Outlaw>
 {
-
     static readonly LurkInCemetery instance = new LurkInCemetery();
 
     public static LurkInCemetery Instance
@@ -18,11 +17,7 @@ public sealed class LurkInCemetery : State<Outlaw>
 
     public override void Enter(Outlaw agent)
     {
-        //if (agent.GetLocation() != Tiles.Cemetery)
-        //{
-            Debug.Log("Outlaw: Arrived at the cemetery!");
-        //    agent.ChangeLocation(Tiles.Cemetery);
-        //}
+        Debug.Log("Outlaw: Arrived at the cemetery!");
     }
 
     public override void Execute(Outlaw agent)
@@ -42,8 +37,6 @@ public sealed class LurkInCemetery : State<Outlaw>
 
     public override void Exit(Outlaw agent)
     {
-        //agent.previousState = Instance;
-        //agent.previousLocation = agent.location;
         Debug.Log("Outlaw: Leaving the cemetery.");
     }
 }

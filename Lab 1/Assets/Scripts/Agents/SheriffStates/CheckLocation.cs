@@ -23,19 +23,20 @@ public sealed class CheckLocation : State<Sheriff>
 
     public override void Enter(Sheriff agent)
     {
-        Debug.Log("Sheriff: !");
+        Debug.Log("Sheriff: Arrived at a location!");
     }
 
     public override void Execute(Sheriff agent)
     {
         GameObject outlawObject = GameObject.Find("Jesse");
         Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
-        if (Distance(agent.currentLocation, outlaw.currentLocation) <= 1.0)
+        if (Distance(agent.currentLocation, outlaw.currentLocation) <= 1.0 && outlaw.isAlive)
         {
+            agent.YellAtOutlaw();
+
             if (agent.currentPath != null)
                 agent.ClearCurrentPath();
-            //agent.previousLocation = agent.destination;
-            //agent.previousState = agent.nextState;
+
             agent.ChangeState(FightOutlaw.Instance);
         }
         else if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.2f)

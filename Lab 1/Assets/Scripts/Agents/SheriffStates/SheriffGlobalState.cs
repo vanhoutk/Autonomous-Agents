@@ -28,16 +28,18 @@ public sealed class SheriffGlobalState : State<Sheriff>
 
     public override void Execute(Sheriff agent)
     {
-        if (agent.nextState != FightOutlaw.Instance && agent.stateMachine.GetState() != FightOutlaw.Instance)
+        GameObject outlawObject = GameObject.Find("Jesse");
+        Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
+
+        if (agent.nextState != FightOutlaw.Instance && agent.stateMachine.GetState() != FightOutlaw.Instance && outlaw.isAlive)
         {
-            GameObject outlawObject = GameObject.Find("Jesse");
-            Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
             if (Distance(agent.currentLocation, outlaw.currentLocation) <= 1.0)
             {
+                agent.YellAtOutlaw();
+
                 if (agent.currentPath != null)
                     agent.ClearCurrentPath();
-                //agent.previousLocation = agent.destination;
-                //agent.previousState = agent.nextState;
+
                 agent.ChangeState(FightOutlaw.Instance);
             }
         }

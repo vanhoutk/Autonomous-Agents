@@ -2,7 +2,6 @@
 
 public sealed class RobBank : State<Outlaw>
 {
-
     static readonly RobBank instance = new RobBank();
 
     public static RobBank Instance
@@ -18,17 +17,13 @@ public sealed class RobBank : State<Outlaw>
 
     public override void Enter(Outlaw agent)
     {
-        //if (agent.GetLocation() != Tiles.Bank)
-        //{
-            Debug.Log("Outlaw: Going to rob the bank!");
-        //    agent.ChangeLocation(Tiles.Bank);
-        //}
+        Debug.Log("Outlaw: Going to rob the bank!");
     }
 
     public override void Execute(Outlaw agent)
     {
         agent.RobBank();
-        //Debug.Log("Outlaw: Just robbed the bank! Now I have " + agent.GetGoldCarried() + " gold!");
+        Debug.Log("Outlaw: Just robbed the bank! Now I have " + agent.GetGoldCarried() + " gold!");
         agent.FindPath(agent.previousLocation);
         agent.nextState = agent.previousState;
         agent.GetFSM().RevertToPreviousState();
@@ -36,8 +31,6 @@ public sealed class RobBank : State<Outlaw>
 
     public override void Exit(Outlaw agent)
     {
-        //agent.previousState = Instance;
-        //agent.previousLocation = Tiles.Bank;
         Debug.Log("Outlaw: Leaving the bank!");
     }
 }
