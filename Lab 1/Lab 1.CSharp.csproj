@@ -109,6 +109,11 @@
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPooledRigidbody.cs" />
     <Compile Include="Assets\Scripts\LeanPool\Scripts\LeanPooledRigidbody2D.cs" />
     <Compile Include="Assets\Scripts\PathFinding\Pathfinding.cs" />
+    <Compile Include="Assets\Scripts\Sensing\Hearing.cs" />
+    <Compile Include="Assets\Scripts\Sensing\Sense.cs" />
+    <Compile Include="Assets\Scripts\Sensing\SenseManager.cs" />
+    <Compile Include="Assets\Scripts\Sensing\Sight.cs" />
+    <Compile Include="Assets\Scripts\Sensing\Smell.cs" />
     <Compile Include="Assets\Scripts\Tiling\TileSprite.cs" />
     <Compile Include="Assets\Scripts\Tiling\Tiles.cs" />
     <Compile Include="Assets\Scripts\Tiling\TilingSystem.cs" />
