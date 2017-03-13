@@ -63,7 +63,7 @@ public class Outlaw : Agent<Outlaw>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    public void FindPath(Tiles location)
+    /*public void FindPath(Tiles location)
     {
         Debug.Log("Outlaw: Start of findpath");
         mapGrid = tilingSystem.mapGrid;
@@ -73,7 +73,7 @@ public class Outlaw : Agent<Outlaw>
         var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         currentPath = aStar;
         Debug.Log("Outlaw: A* done...");
-    }
+    }*/
 
     public void DespawnOutlaw(AgentTypes type)
     {

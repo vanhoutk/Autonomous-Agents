@@ -56,7 +56,7 @@ public class Sheriff : Agent<Sheriff>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    public void FindPath(Tiles location)
+    /*public void FindPath(Tiles location)
     {
         Debug.Log("Sheriff: Start of findpath");
 
@@ -69,7 +69,7 @@ public class Sheriff : Agent<Sheriff>
         var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         currentPath = aStar;
         Debug.Log("Sheriff: A* done...");
-    }
+    }*/
 
     public void DespawnSheriff(AgentTypes type)
     {

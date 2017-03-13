@@ -97,7 +97,7 @@ public class Miner : Agent<Miner>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    public void FindPath(Tiles location)
+    /*public void FindPath(Tiles location)
     {
         Debug.Log("Miner: Start of findpath");
         mapGrid = tilingSystem.mapGrid;
@@ -107,11 +107,14 @@ public class Miner : Agent<Miner>
         var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         currentPath = aStar;
         Debug.Log("Miner: A* done...");
-    }
+    }*/
 
     public void RespondToBankRobbery(int amount)
     {
-        moneyInBank -= amount;
+        if (amount > moneyInBank)
+            moneyInBank = 0;
+        else
+            moneyInBank -= amount;
         Debug.Log("Miner: My Money!");
     }
 

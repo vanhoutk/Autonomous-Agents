@@ -1,4 +1,4 @@
-﻿public class Smell : Sense
+﻿public class Smell <T>: Sense<T>
 {
 
 }

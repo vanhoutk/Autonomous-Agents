@@ -1,4 +1,4 @@
-﻿public class Hearing : Sense
+﻿public class Hearing <T> : Sense <T>
 {
 
 }

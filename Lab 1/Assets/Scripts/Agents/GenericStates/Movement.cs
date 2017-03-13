@@ -17,7 +17,7 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
 
     public override void Enter(T agent)
     {
-        Debug.Log("Starting to walk!");
+        //Debug.Log("Starting to walk!");
     }
 
     public override void Execute(T agent)
@@ -27,23 +27,25 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
         {
             agent.moveDelay = 10;
 
-            Node currentNode = new Node((int)agent.currentLocation.x, (int)agent.currentLocation.y);
-            Node nextNode = new Node((int)agent.targetLocation.x, (int)agent.targetLocation.y);
+            //Node currentNode = new Node((int)agent.currentLocation.x, (int)agent.currentLocation.y);
+            Node currentNode = agent.mapGrid.nodeSet[new Coordinates((int)agent.currentLocation.x, (int)agent.currentLocation.y)];
+            //Node nextNode = new Node((int)agent.targetLocation.x, (int)agent.targetLocation.y);
+            Node nextNode = agent.mapGrid.nodeSet[new Coordinates((int)agent.targetLocation.x, (int)agent.targetLocation.y)];
             Node parentNode = agent.currentPath.cameFrom[nextNode];
 
             while (!parentNode.Equals(currentNode))
             {
-                TileSprite pathTile = agent.tilingSystem.GetTile(nextNode.x, nextNode.y);
-                pathTile.SetPathColor(nextNode.x, nextNode.y, agent.tilingSystem.MapSize.y);
+                TileSprite pathTile = agent.tilingSystem.GetTile(nextNode.coordinates.x, nextNode.coordinates.y);
+                pathTile.SetPathColor(nextNode.coordinates.x, nextNode.coordinates.y, agent.tilingSystem.MapSize.y);
                 nextNode = parentNode;
                 parentNode = agent.currentPath.cameFrom[nextNode];
             }
 
-            agent.currentLocation = new Vector2(nextNode.x, nextNode.y);
+            agent.currentLocation = new Vector2(nextNode.coordinates.x, nextNode.coordinates.y);
             agent.transform.position = new Vector3(agent.currentLocation.x - agent.tilingSystem.CurrentPosition.x, agent.currentLocation.y - agent.tilingSystem.CurrentPosition.y, 0);
 
-            TileSprite visitedTile = agent.tilingSystem.GetTile(nextNode.x, nextNode.y);
-            visitedTile.ClearPathColor(nextNode.x, nextNode.y, agent.tilingSystem.MapSize.y);
+            TileSprite visitedTile = agent.tilingSystem.GetTile(nextNode.coordinates.x, nextNode.coordinates.y);
+            visitedTile.ClearPathColor(nextNode.coordinates.x, nextNode.coordinates.y, agent.tilingSystem.MapSize.y);
 
             if (agent.currentLocation == agent.targetLocation)
             {
@@ -55,6 +57,6 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
 
     public override void Exit(T agent)
     {
-        Debug.Log("Arriving at my destination!");
+        //Debug.Log("Arriving at my destination!");
     }
 }

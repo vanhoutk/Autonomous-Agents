@@ -5,6 +5,7 @@ using UnityEngine;
 public class TilingSystem : MonoBehaviour
 {
     // Variables
+    private Dictionary<Tiles, AttenuationData> tileAttenuationData = new Dictionary<Tiles, AttenuationData>();
     private float tileSize = 1f;
     private GameObject tileContainer;
     private List<GameObject> _tiles = new List<GameObject>();
@@ -16,6 +17,7 @@ public class TilingSystem : MonoBehaviour
     public List<Vector2> locations;
 	public Sprite defaultImage;
     public SquareGrid mapGrid;
+    //public SquareGrid2 mapGrid2;
 	public Vector2 CurrentPosition;
     public Vector2 MapSize;
     public Vector2 ViewPortSize;
@@ -27,6 +29,7 @@ public class TilingSystem : MonoBehaviour
      *
      * private void AddTilesToMap()
      * private void DefaultTiles()
+     * private void SetTileAttenuationData()
      * private void SetTiles()
      * public void Start()
      */
@@ -104,6 +107,22 @@ public class TilingSystem : MonoBehaviour
         }
 	}
 
+    // Initialise the dictionary with the tile attenuation data
+    private void SetTileAttenuationData()
+    {
+        tileAttenuationData.Add(Tiles.Bank, new AttenuationData(1, 10, 10, 10));
+        tileAttenuationData.Add(Tiles.Cemetery, new AttenuationData(1, 1, 1, 1));
+        tileAttenuationData.Add(Tiles.GoldMine, new AttenuationData(1, 10, 10, 10));
+        tileAttenuationData.Add(Tiles.Mountains, new AttenuationData(5, 10, 1, 1));
+        tileAttenuationData.Add(Tiles.OutlawCamp, new AttenuationData(1, 5, 1, 5));
+        tileAttenuationData.Add(Tiles.Plains, new AttenuationData(1, 1, 1, 1));
+        tileAttenuationData.Add(Tiles.Saloon, new AttenuationData(1, 10, 20, 10));
+        tileAttenuationData.Add(Tiles.Shack, new AttenuationData(1, 10, 10, 10));
+        tileAttenuationData.Add(Tiles.SheriffsOffice, new AttenuationData(1, 10, 10, 10));
+        tileAttenuationData.Add(Tiles.Undertakers, new AttenuationData(1, 10, 10, 10));
+        tileAttenuationData.Add(Tiles.Unset, new AttenuationData(0, 0, 0, 0));
+    }
+
 	// Set the tiles of the map to what is specified in tileSprites
 	private void SetTiles()
     {
@@ -118,6 +137,8 @@ public class TilingSystem : MonoBehaviour
             for (var x = 0; x < MapSize.x; x++)
             {
                 _map[x, y] = new TileSprite(FindTile(Tiles.Plains));
+                Coordinates coordinates = new Coordinates(x, y);
+                mapGrid.nodeSet.Add(coordinates, new Node(coordinates, tileAttenuationData[Tiles.Plains]));
             }
         }
 
@@ -129,7 +150,12 @@ public class TilingSystem : MonoBehaviour
 
             _map[randomX, randomY] = new TileSprite(FindTile(Tiles.Mountains));
 
-            mapGrid.mountains.Add(new Node(randomX, randomY));
+            //mapGrid.mountains.Add(new Node(randomX, randomY));
+
+            Coordinates random_coordinates = new Coordinates(randomX, randomY);
+            if (mapGrid.nodeSet.ContainsKey(random_coordinates))
+                mapGrid.nodeSet.Remove(random_coordinates);
+            mapGrid.nodeSet.Add(random_coordinates, new Node(random_coordinates, tileAttenuationData[Tiles.Mountains]));
         }
 
         // Add the unique locations
@@ -145,14 +171,22 @@ public class TilingSystem : MonoBehaviour
             }
 
             _map[randX, randY] = new TileSprite(FindTile(i));
-            locations.Add(new Vector2((randX) * tileSize, (randY) * tileSize)); 
+            locations.Add(new Vector2((randX) * tileSize, (randY) * tileSize));
+
+            Coordinates rand_coordinates = new Coordinates(randX, randY);
+            if (mapGrid.nodeSet.ContainsKey(rand_coordinates))
+                mapGrid.nodeSet.Remove(rand_coordinates);
+            mapGrid.nodeSet.Add(rand_coordinates, new Node(rand_coordinates, tileAttenuationData[i])); // TODO: Need to change the last 4 values to be location dependent
         }
     }
 
     public void Start()
     {
+        SetTileAttenuationData();
+
         _map = new TileSprite[(int)MapSize.x, (int)MapSize.y];
         mapGrid = new SquareGrid((int)MapSize.x, (int)MapSize.y);
+        //mapGrid2 = new SquareGrid2((int)MapSize.x, (int)MapSize.y);
 
         DefaultTiles();
         SetTiles();
@@ -161,19 +195,31 @@ public class TilingSystem : MonoBehaviour
         // Set the initial locations of each of the agents
         // Ideally would do this within the classes, but agent classes get created before the tiling system
         GameObject outlawObject = GameObject.Find("Jesse");
-        Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
-        outlaw.ChangeLocation(Tiles.OutlawCamp);
+        if(outlawObject != null)
+        {
+            Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
+            outlaw.ChangeLocation(Tiles.OutlawCamp);
+        }
 
         GameObject minerObject = GameObject.Find("Miner");
-        Miner miner = minerObject.GetComponent<Miner>();
-        miner.ChangeLocation(Tiles.Shack);
-
+        if(minerObject != null)
+        {
+            Miner miner = minerObject.GetComponent<Miner>();
+            miner.ChangeLocation(Tiles.Shack);
+        }
+        
         GameObject sheriffObject = GameObject.Find("Wyatt");
-        Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
-        sheriff.ChangeLocation(Tiles.SheriffsOffice);
+        if(sheriffObject != null)
+        {
+            Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
+            sheriff.ChangeLocation(Tiles.SheriffsOffice);
+        }
 
         GameObject undertakerObject = GameObject.Find("Under");
-        Undertaker undertaker = undertakerObject.GetComponent<Undertaker>();
-        undertaker.ChangeLocation(Tiles.Undertakers);
+        if(undertakerObject != null)
+        {
+            Undertaker undertaker = undertakerObject.GetComponent<Undertaker>();
+            undertaker.ChangeLocation(Tiles.Undertakers);
+        }
     }
 }

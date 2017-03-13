@@ -32,7 +32,7 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
             agent.nextState = VisitBankAndDepositGold.Instance;
             agent.ChangeState(Movement<Miner>.Instance);
         }
-        else if (agent.Thirsty())
+        else if (agent.Thirsty() && agent.GetMoneyInBank() >= 2)
         {
             agent.FindPath(Tiles.Saloon);
             agent.nextState = QuenchThirst.Instance;

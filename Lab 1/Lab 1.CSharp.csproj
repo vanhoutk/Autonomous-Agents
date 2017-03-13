@@ -112,6 +112,7 @@
     <Compile Include="Assets\Scripts\Sensing\Hearing.cs" />
     <Compile Include="Assets\Scripts\Sensing\Sense.cs" />
     <Compile Include="Assets\Scripts\Sensing\SenseManager.cs" />
+    <Compile Include="Assets\Scripts\Sensing\SenseTypes.cs" />
     <Compile Include="Assets\Scripts\Sensing\Sight.cs" />
     <Compile Include="Assets\Scripts\Sensing\Smell.cs" />
     <Compile Include="Assets\Scripts\Tiling\TileSprite.cs" />

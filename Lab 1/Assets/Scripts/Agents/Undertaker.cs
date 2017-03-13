@@ -51,7 +51,7 @@ public class Undertaker : Agent<Undertaker>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    public void FindPath(Tiles location)
+    /*public void FindPath(Tiles location)
     {
         Debug.Log("Undertaker: Start of FindPath - Building");
 
@@ -64,9 +64,9 @@ public class Undertaker : Agent<Undertaker>
         var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         currentPath = aStar;
         Debug.Log("Undertaker: A* done...");
-    }
+    }*/
 
-    public void FindPath(Vector2 location)
+    /*public void FindPath(Vector2 location)
     {
         Debug.Log("Undertaker: Start of FindPath - Grid Location");
 
@@ -79,7 +79,7 @@ public class Undertaker : Agent<Undertaker>
         var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         currentPath = aStar;
         Debug.Log("Undertaker: A* done...");
-    }
+    }*/
 
     public void BuryBody()
     {
