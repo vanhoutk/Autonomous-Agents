@@ -1,4 +1,12 @@
-﻿public abstract class Sense<T>
+﻿public abstract class Sense
 {
-    Agent<T> Sensor;
+    public double inverseTransmissionSpeed;
+    public double maximumRange; // Possibly not necessary
+    public SenseTypes senseType;
+    public Sensor sensor; //Agent that is sensed
+
+    public virtual bool extraChecks(Signal signal, Sensor sensor)
+    {
+        return true;
+    }
 }
