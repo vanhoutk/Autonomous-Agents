@@ -2,21 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SenseManager : MonoBehaviour {
+// Holds a record in the notification queue, ready to notify the sensor at the correct time.
+public struct Notification
+{
+    public double time;
+    public Sensor sensor;
+    public Signal signal;
+}
 
-    // Holds a record in the notification queue, ready to notify the sensor at the correct time.
-    struct Notification
-    {
-        public double time;
-        public Sensor sensor;
-        public Signal signal;
-    }
+public class SenseManager : MonoBehaviour
+{
+    public List<Sensor> sensors; // Holds the list of sensors
+    private GameObject controller;
+    private Queue<Notification> notificationQueue; // Holds a queue of notifcations waiting to be honoured
+    private TilingSystem tilingSystem;
 
-    // Holds the list of sensors
-    List<Sensor> sensors;
+    public delegate void MinerNotify(Signal signal);
+    public static event MinerNotify NotifyMiner;
 
-    // Holds a queue of notifcations waiting to be honoured
-    Queue<Notification> notificationQueue;
+    public delegate void OutlawNotify(Signal signal);
+    public static event OutlawNotify NotifyOutlaw;
+
+    public delegate void SheriffNotify(Signal signal);
+    public static event SheriffNotify NotifySheriff;
+
+    public delegate void UndertakerNotify(Signal signal);
+    public static event UndertakerNotify NotifyUndertaker;
 
     void addSignal(Signal signal)
     {
@@ -25,7 +36,7 @@ public class SenseManager : MonoBehaviour {
         foreach(Sensor sensor in sensors)
         {
             // Check if sensor detects the signal
-            if (!sensor.detectsModality(signal.modality))
+            if (!sensor.DetectsModality(signal.modality.senseType))
                 continue;
 
             // Check if distance of signal exceeds the max range of the modality
@@ -39,10 +50,19 @@ public class SenseManager : MonoBehaviour {
             // continue;
 
             // Probably only need to do intensity as signal.strength - the cost in the astar search and if less than threshold
+            Vector3 current_position = sensor.gameObject.transform.position;
+            Vector2 current_location = new Vector2(current_position.x + tilingSystem.CurrentPosition.x, current_position.y + tilingSystem.CurrentPosition.y);
+            SquareGrid mapGrid = tilingSystem.mapGrid;
+            // Path from signal to sensor
+            AStarSearch sensePath = new AStarSearch(mapGrid, mapGrid.nodeSet[new Coordinates((int)signal.position.x, (int)signal.position.y)], mapGrid.nodeSet[new Coordinates((int)current_location.x, (int)current_location.y)], signal.modality.senseType);
+            double pathCost = sensePath.gScore[mapGrid.nodeSet[new Coordinates((int)current_location.x, (int)current_location.y)]];
+            double intensity = Math.Max(signal.signalStrength - pathCost, 0);
+            //if (intensity < sensor.threshold)
+            //    continue;
 
             // Perform additional modality specific checks
-            // if(!signal.modality.extraChecks(signal, sensor)
-            // continue;
+            if(!signal.modality.extraChecks(signal, sensor))
+                continue;
 
             double current_time = (DateTime.Now.ToUniversalTime() - new DateTime(2000, 1, 1)).TotalSeconds;
             double notification_time = current_time + /*distance * */ signal.modality.inverseTransmissionSpeed;
@@ -67,8 +87,25 @@ public class SenseManager : MonoBehaviour {
             
             if (notification.time < current_time)
             {
-                notification.sensor.notify(notification.signal);
-                notificationQueue.Dequeue();
+                switch(notification.sensor.agentType)
+                {
+                    case AgentTypes.Miner:
+                        NotifyMiner(notification.signal);
+                        notificationQueue.Dequeue();
+                        break;
+                    case AgentTypes.Outlaw:
+                        NotifyOutlaw(notification.signal);
+                        notificationQueue.Dequeue();
+                        break;
+                    case AgentTypes.Sheriff:
+                        NotifySheriff(notification.signal);
+                        notificationQueue.Dequeue();
+                        break;
+                    case AgentTypes.Undertaker:
+                        NotifyUndertaker(notification.signal);
+                        notificationQueue.Dequeue();
+                        break;
+                }
             }
             else
             {
@@ -81,6 +118,9 @@ public class SenseManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        controller = GameObject.Find("Controller");
+        tilingSystem = controller.GetComponent<TilingSystem>();
+
         sensors = new List<Sensor>();
         notificationQueue = new Queue<Notification>();
     }
@@ -96,16 +136,36 @@ public class SenseManager : MonoBehaviour {
 
 public class Sensor
 {
-    public Vector2 position;
+    public AgentTypes agentType;
+    public GameObject gameObject; // Can get the transform from this
+    public List<SenseTypes> modalities;
+    public string agentName;
+    //public Vector3 position;
 
-    public bool detectsModality(Sense modality)
+    public bool DetectsModality(SenseTypes modality)
     {
-        return true;
+        if (modalities.Contains(modality))
+            return true;
+        else
+            return false;
+        //Agent<agentType> agent = gameObject.GetComponent<Agent<agentType>>();
+        //return true;
     }
 
-    public void notify(Signal signal)
-    {
+    //public void Notify(Signal signal)
+    //{
+    //    if(agentType == AgentTypes.Miner)
+    //    {
 
+    //    }
+    //}
+
+    public Sensor(AgentTypes agentType, GameObject gameObject, List<SenseTypes> modalities, string agentName)
+    {
+        this.agentType = agentType;
+        this.gameObject = gameObject;
+        this.modalities = modalities;
+        this.agentName = agentName;
     }
 }
 

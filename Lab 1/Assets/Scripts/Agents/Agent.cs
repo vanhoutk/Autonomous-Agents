@@ -6,6 +6,7 @@ abstract public class Agent<T> : MonoBehaviour
     public AStarSearch currentPath;
     public bool isAlive;
     public int moveDelay = 10;
+    public SenseManager senseManager;
     public SquareGrid mapGrid;
     public State<T> nextState;
     public State<T> previousState;

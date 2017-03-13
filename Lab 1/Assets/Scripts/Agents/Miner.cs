@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Miner : Agent<Miner>
 {
@@ -14,6 +15,8 @@ public class Miner : Agent<Miner>
     private int fatigue = 0;
 
     private GameObject controller;
+    private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
+    private string agentName = "Miner";
 
     // Functions
     /*
@@ -84,6 +87,13 @@ public class Miner : Agent<Miner>
     {
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
+        senseManager = controller.GetComponent<SenseManager>();
+        GameObject self = GameObject.Find("Miner");
+        if(self != null)
+        {
+            senseManager.sensors.Add(new Sensor(AgentTypes.Miner, self, modalities, agentName));
+            SenseManager.NotifyMiner += RespondToSenseEvent;
+        }
 
         stateMachine = new StateMachine<Miner>();
         stateMachine.Init(this, GoHomeAndSleepTilRested.Instance);
@@ -116,6 +126,11 @@ public class Miner : Agent<Miner>
         else
             moneyInBank -= amount;
         Debug.Log("Miner: My Money!");
+    }
+
+    public void RespondToSenseEvent(Signal signal)
+    {
+
     }
 
     public void AddToBank(int amount)
