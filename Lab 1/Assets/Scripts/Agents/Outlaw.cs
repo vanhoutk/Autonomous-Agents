@@ -19,6 +19,7 @@ public class Outlaw : Agent<Outlaw>
      * public void Awake()
      * public void ChangeLocation(Tiles location)
      * public void FindPath(Tiles location)
+     * public void Start()
      *
      * public void DespawnOutlaw(AgentTypes type)
      * public void RespawnOutlaw(AgentTypes type)
@@ -74,6 +75,11 @@ public class Outlaw : Agent<Outlaw>
         currentPath = aStar;
         Debug.Log("Outlaw: A* done...");
     }*/
+
+    public void Start()
+    {
+        ChangeLocation(Tiles.OutlawCamp);
+    }
 
     public void DespawnOutlaw(AgentTypes type)
     {

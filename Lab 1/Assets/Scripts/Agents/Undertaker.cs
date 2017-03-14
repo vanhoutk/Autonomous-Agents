@@ -81,6 +81,11 @@ public class Undertaker : Agent<Undertaker>
         Debug.Log("Undertaker: A* done...");
     }*/
 
+    public void Start()
+    {
+        ChangeLocation(Tiles.Undertakers);
+    }
+
     public void BuryBody()
     {
         if(OnBuriedBody != null)

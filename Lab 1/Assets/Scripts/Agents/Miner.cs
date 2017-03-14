@@ -15,6 +15,7 @@ public class Miner : Agent<Miner>
     private int fatigue = 0;
 
     private GameObject controller;
+    private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
     private string agentName = "Miner";
 
@@ -32,6 +33,7 @@ public class Miner : Agent<Miner>
      * public void Awake()
      * public void ChangeLocation(Tiles location) // Not used anymore
      * public void FindPath(Tiles location)
+     * public void Start()
      * public void RespondToBankRobbery()
      *
      * public void AddToBank(int amount)
@@ -88,12 +90,6 @@ public class Miner : Agent<Miner>
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
         senseManager = controller.GetComponent<SenseManager>();
-        GameObject self = GameObject.Find("Miner");
-        if(self != null)
-        {
-            senseManager.sensors.Add(new Sensor(AgentTypes.Miner, self, modalities, agentName));
-            SenseManager.NotifyMiner += RespondToSenseEvent;
-        }
 
         stateMachine = new StateMachine<Miner>();
         stateMachine.Init(this, GoHomeAndSleepTilRested.Instance);
@@ -119,6 +115,18 @@ public class Miner : Agent<Miner>
         Debug.Log("Miner: A* done...");
     }*/
 
+    public void Start()
+    {
+        GameObject self = GameObject.Find("Miner");
+        if (self != null)
+        {
+            senseManager.sensors.Add(new Sensor(AgentTypes.Miner, self, modalities, thresholds, agentName));
+            SenseManager.NotifyMiner += RespondToSenseEvent;
+        }
+
+        ChangeLocation(Tiles.Shack);
+    }
+
     public void RespondToBankRobbery(int amount)
     {
         if (amount > moneyInBank)
@@ -130,7 +138,7 @@ public class Miner : Agent<Miner>
 
     public void RespondToSenseEvent(Signal signal)
     {
-
+        Debug.LogError("Miner: Oh no, a sense event!");
     }
 
     public void AddToBank(int amount)

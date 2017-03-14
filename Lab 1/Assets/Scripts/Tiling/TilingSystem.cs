@@ -6,11 +6,11 @@ public class TilingSystem : MonoBehaviour
 {
     // Variables
     private Dictionary<Tiles, AttenuationData> tileAttenuationData = new Dictionary<Tiles, AttenuationData>();
-    private float tileSize = 1f;
     private GameObject tileContainer;
     private List<GameObject> _tiles = new List<GameObject>();
     private TileSprite[,] _map;
 
+    public float tileSize;
     public GameObject tileContainerPrefab;
     public GameObject tilePrefab;
     public List<TileSprite> tileSprites;
@@ -152,7 +152,7 @@ public class TilingSystem : MonoBehaviour
 
             //mapGrid.mountains.Add(new Node(randomX, randomY));
 
-            Coordinates random_coordinates = new Coordinates(randomX, randomY);
+            Coordinates random_coordinates = new Coordinates(randomX * (int)tileSize, randomY * (int)tileSize);
             if (mapGrid.nodeSet.ContainsKey(random_coordinates))
                 mapGrid.nodeSet.Remove(random_coordinates);
             mapGrid.nodeSet.Add(random_coordinates, new Node(random_coordinates, tileAttenuationData[Tiles.Mountains]));
@@ -173,7 +173,7 @@ public class TilingSystem : MonoBehaviour
             _map[randX, randY] = new TileSprite(FindTile(i));
             locations.Add(new Vector2((randX) * tileSize, (randY) * tileSize));
 
-            Coordinates rand_coordinates = new Coordinates(randX, randY);
+            Coordinates rand_coordinates = new Coordinates(randX * (int)tileSize, randY * (int)tileSize);
             if (mapGrid.nodeSet.ContainsKey(rand_coordinates))
                 mapGrid.nodeSet.Remove(rand_coordinates);
             mapGrid.nodeSet.Add(rand_coordinates, new Node(rand_coordinates, tileAttenuationData[i])); // TODO: Need to change the last 4 values to be location dependent
@@ -191,35 +191,5 @@ public class TilingSystem : MonoBehaviour
         DefaultTiles();
         SetTiles();
         AddTilesToMap();
-
-        // Set the initial locations of each of the agents
-        // Ideally would do this within the classes, but agent classes get created before the tiling system
-        GameObject outlawObject = GameObject.Find("Jesse");
-        if(outlawObject != null)
-        {
-            Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
-            outlaw.ChangeLocation(Tiles.OutlawCamp);
-        }
-
-        GameObject minerObject = GameObject.Find("Miner");
-        if(minerObject != null)
-        {
-            Miner miner = minerObject.GetComponent<Miner>();
-            miner.ChangeLocation(Tiles.Shack);
-        }
-        
-        GameObject sheriffObject = GameObject.Find("Wyatt");
-        if(sheriffObject != null)
-        {
-            Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
-            sheriff.ChangeLocation(Tiles.SheriffsOffice);
-        }
-
-        GameObject undertakerObject = GameObject.Find("Under");
-        if(undertakerObject != null)
-        {
-            Undertaker undertaker = undertakerObject.GetComponent<Undertaker>();
-            undertaker.ChangeLocation(Tiles.Undertakers);
-        }
     }
 }

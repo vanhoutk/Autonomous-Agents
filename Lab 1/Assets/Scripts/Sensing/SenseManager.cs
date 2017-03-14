@@ -12,11 +12,14 @@ public struct Notification
 
 public class SenseManager : MonoBehaviour
 {
-    public List<Sensor> sensors; // Holds the list of sensors
+    // Variables
     private GameObject controller;
     private Queue<Notification> notificationQueue; // Holds a queue of notifcations waiting to be honoured
     private TilingSystem tilingSystem;
 
+    public List<Sensor> sensors; // Holds the list of sensors
+
+    // Notification Events
     public delegate void MinerNotify(Signal signal);
     public static event MinerNotify NotifyMiner;
 
@@ -29,7 +32,15 @@ public class SenseManager : MonoBehaviour
     public delegate void UndertakerNotify(Signal signal);
     public static event UndertakerNotify NotifyUndertaker;
 
-    void addSignal(Signal signal)
+    // Functions
+    /*
+     * void AddSignal(Signal signal)
+     * void SendSignals()
+     * void Start()
+     * void Update()
+     */
+
+    void AddSignal(Signal signal)
     {
         // Aggregation Phase
         List<Sensor> valid_sensors = new List<Sensor>();
@@ -57,13 +68,16 @@ public class SenseManager : MonoBehaviour
             AStarSearch sensePath = new AStarSearch(mapGrid, mapGrid.nodeSet[new Coordinates((int)signal.position.x, (int)signal.position.y)], mapGrid.nodeSet[new Coordinates((int)current_location.x, (int)current_location.y)], signal.modality.senseType);
             double pathCost = sensePath.gScore[mapGrid.nodeSet[new Coordinates((int)current_location.x, (int)current_location.y)]];
             double intensity = Math.Max(signal.signalStrength - pathCost, 0);
-            //if (intensity < sensor.threshold)
-            //    continue;
+
+            // If the intensity at the sensor is less than the sensor's threshold for experiencing the sense
+            if (intensity < sensor.thresholds[signal.modality.senseType])
+                continue;
 
             // Perform additional modality specific checks
             if(!signal.modality.extraChecks(signal, sensor))
                 continue;
 
+            // Create the notification and send it
             double current_time = (DateTime.Now.ToUniversalTime() - new DateTime(2000, 1, 1)).TotalSeconds;
             double notification_time = current_time + /*distance * */ signal.modality.inverseTransmissionSpeed;
 
@@ -109,15 +123,15 @@ public class SenseManager : MonoBehaviour
             }
             else
             {
-                // Assuming queue is sorted
+                // Assumes queue is sorted in time
                 break;
             }
             
         }
     }
 
-    // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
 
@@ -125,53 +139,17 @@ public class SenseManager : MonoBehaviour
         notificationQueue = new Queue<Notification>();
     }
 	
-	// Update is called once per frame
-	void Update () {
-		/* 
-        foreach Agent
-        */
-            
+	void Update ()
+    {
+        // Possibly should call sendSignals in here
+        if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.0005f)
+        {
+            AddSignal(new Signal(300, new Hearing(), new Vector2(0, 0)));
+        }
+
+        if (notificationQueue.Count > 0)
+        {
+            SendSignals();
+        }
 	}
-}
-
-public class Sensor
-{
-    public AgentTypes agentType;
-    public GameObject gameObject; // Can get the transform from this
-    public List<SenseTypes> modalities;
-    public string agentName;
-    //public Vector3 position;
-
-    public bool DetectsModality(SenseTypes modality)
-    {
-        if (modalities.Contains(modality))
-            return true;
-        else
-            return false;
-        //Agent<agentType> agent = gameObject.GetComponent<Agent<agentType>>();
-        //return true;
-    }
-
-    //public void Notify(Signal signal)
-    //{
-    //    if(agentType == AgentTypes.Miner)
-    //    {
-
-    //    }
-    //}
-
-    public Sensor(AgentTypes agentType, GameObject gameObject, List<SenseTypes> modalities, string agentName)
-    {
-        this.agentType = agentType;
-        this.gameObject = gameObject;
-        this.modalities = modalities;
-        this.agentName = agentName;
-    }
-}
-
-public class Signal
-{
-    public double signalStrength;
-    public Sense modality;
-    public Vector2 position;
 }

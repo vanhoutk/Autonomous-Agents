@@ -21,6 +21,7 @@ public class Sheriff : Agent<Sheriff>
      * public void Awake()
      * public void ChangeLocation(Tiles location)
      * public void FindPath(Tiles location)
+     * public void Start()
      *
      * public void DespawnSheriff(AgentTypes type)
      * public void RespawnSheriff(AgentTypes type)
@@ -70,6 +71,11 @@ public class Sheriff : Agent<Sheriff>
         currentPath = aStar;
         Debug.Log("Sheriff: A* done...");
     }*/
+
+    public void Start()
+    {
+        ChangeLocation(Tiles.SheriffsOffice);
+    }
 
     public void DespawnSheriff(AgentTypes type)
     {
