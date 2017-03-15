@@ -21,7 +21,6 @@ public class Undertaker : Agent<Undertaker>
     /*
      * public StateMachine<Undertaker> GetFSM()
      * public void Awake()
-     * public void ChangeLocation(Tiles location)
      * 
      * public void BuryBody()
      * public void CollectABody()
@@ -47,13 +46,6 @@ public class Undertaker : Agent<Undertaker>
         Sheriff.OnSheriffDead += RespondToDeath;
     }
 
-    public void ChangeLocation(Tiles location)
-    {
-        this.location = location;
-        currentLocation = tilingSystem.locations[(int)location];
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-    }
-
     public void Start()
     {
         GameObject self = GameObject.Find(agentName);
@@ -68,7 +60,7 @@ public class Undertaker : Agent<Undertaker>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.LogError("Undertaker: Oh no, a sense event!");
+        Debug.Log("Undertaker: Oh no, a sense event!");
     }
 
     public void BuryBody()

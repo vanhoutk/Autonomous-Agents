@@ -151,7 +151,7 @@ public class TilingSystem : MonoBehaviour
 
             //mapGrid.mountains.Add(new Node(randomX, randomY));
 
-            Coordinates random_coordinates = new Coordinates(randomX * (int)tileSize, randomY * (int)tileSize);
+            Coordinates random_coordinates = new Coordinates(randomX, randomY);
             if (mapGrid.nodeSet.ContainsKey(random_coordinates))
                 mapGrid.nodeSet.Remove(random_coordinates);
             mapGrid.nodeSet.Add(random_coordinates, new Node(random_coordinates, tileAttenuationData[Tiles.Mountains]));
@@ -170,9 +170,9 @@ public class TilingSystem : MonoBehaviour
             }
 
             _map[randX, randY] = new TileSprite(FindTile(i));
-            locations.Add(new Vector2((randX) * tileSize, (randY) * tileSize));
+            locations.Add(new Vector2((randX), (randY)));
 
-            Coordinates rand_coordinates = new Coordinates(randX * (int)tileSize, randY * (int)tileSize);
+            Coordinates rand_coordinates = new Coordinates(randX, randY);
             if (mapGrid.nodeSet.ContainsKey(rand_coordinates))
                 mapGrid.nodeSet.Remove(rand_coordinates);
             mapGrid.nodeSet.Add(rand_coordinates, new Node(rand_coordinates, tileAttenuationData[i])); // TODO: Need to change the last 4 values to be location dependent

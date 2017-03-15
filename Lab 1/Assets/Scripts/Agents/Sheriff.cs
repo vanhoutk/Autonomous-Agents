@@ -23,7 +23,6 @@ public class Sheriff : Agent<Sheriff>
     /* 
      * public StateMachine<Sheriff> GetFSM()
      * public void Awake()
-     * public void ChangeLocation(Tiles location)
      * public void Start()
      * public void RespondToSenseEvent(Signal signal)
      *
@@ -55,13 +54,6 @@ public class Sheriff : Agent<Sheriff>
         Undertaker.OnCollectedBody += DespawnSheriff;
     }
 
-    public void ChangeLocation(Tiles location)
-    {
-        this.location = location;
-        currentLocation = tilingSystem.locations[(int)location];
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-    }
-
     public void Start()
     {
         GameObject self = GameObject.Find(agentName);
@@ -76,7 +68,7 @@ public class Sheriff : Agent<Sheriff>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.LogError("Sheriff: Oh no, a sense event!");
+        Debug.Log("Sheriff: Oh no, a sense event!");
     }
 
     public void DespawnSheriff(AgentTypes type)

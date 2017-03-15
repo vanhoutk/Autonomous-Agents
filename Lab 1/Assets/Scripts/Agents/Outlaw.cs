@@ -21,7 +21,6 @@ public class Outlaw : Agent<Outlaw>
     /* 
      * public StateMachine<Outlaw> GetFSM()
      * public void Awake()
-     * public void ChangeLocation(Tiles location)
      * public void Start()
      * public void RespondToSenseEvent(Signal signal)
      *
@@ -62,13 +61,6 @@ public class Outlaw : Agent<Outlaw>
         Undertaker.OnCollectedBody += DespawnOutlaw;
     }
 
-    public void ChangeLocation(Tiles location)
-    {
-        this.location = location;
-        currentLocation = tilingSystem.locations[(int)location];
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-    }
-
     public void Start()
     {
         GameObject self = GameObject.Find(agentName);
@@ -83,7 +75,7 @@ public class Outlaw : Agent<Outlaw>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.LogError("Outlaw: Oh no, a sense event!");
+        Debug.Log("Outlaw: Oh no, a sense event!");
     }
 
     public void DespawnOutlaw(AgentTypes type)

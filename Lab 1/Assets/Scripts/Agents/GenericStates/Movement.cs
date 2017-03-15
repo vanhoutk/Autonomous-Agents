@@ -42,7 +42,7 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
             }
 
             agent.currentLocation = new Vector2(nextNode.coordinates.x, nextNode.coordinates.y);
-            agent.transform.position = new Vector3(agent.currentLocation.x - agent.tilingSystem.CurrentPosition.x, agent.currentLocation.y - agent.tilingSystem.CurrentPosition.y, 0);
+            agent.transform.position = new Vector3((agent.currentLocation.x - agent.tilingSystem.CurrentPosition.x) * agent.tilingSystem.tileSize, (agent.currentLocation.y - agent.tilingSystem.CurrentPosition.y) * agent.tilingSystem.tileSize, 0);
 
             TileSprite visitedTile = agent.tilingSystem.GetTile(nextNode.coordinates.x, nextNode.coordinates.y);
             visitedTile.ClearPathColor(nextNode.coordinates.x, nextNode.coordinates.y, agent.tilingSystem.MapSize.y);

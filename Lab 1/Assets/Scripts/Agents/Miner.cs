@@ -31,7 +31,6 @@ public class Miner : Agent<Miner>
      *
      * public StateMachine<Miner> GetFSM()
      * public void Awake()
-     * public void ChangeLocation(Tiles location)
      * public void Start()
      * public void RespondToBankRobbery()
      * public void RespondToSenseEvent(Signal signal)
@@ -96,13 +95,6 @@ public class Miner : Agent<Miner>
         Outlaw.OnBankRobbery += RespondToBankRobbery;
     }
 
-    public void ChangeLocation(Tiles location)
-    {
-        this.location = location;
-        currentLocation = tilingSystem.locations[(int)location];
-        transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
-    }
-
     public void Start()
     {
         GameObject self = GameObject.Find(agentName);
@@ -126,7 +118,7 @@ public class Miner : Agent<Miner>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.LogError("Miner: Oh no, a sense event!");
+        Debug.Log("Miner: Oh no, a sense event!");
     }
 
     public void AddToBank(int amount)

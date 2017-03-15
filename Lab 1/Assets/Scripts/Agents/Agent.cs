@@ -21,6 +21,7 @@ abstract public class Agent<T> : MonoBehaviour
     // Functions
     /*
      * public Tiles GetLocation()
+     * public void ChangeLocation(Tiles location)
      * public void ChangeState(State<T> state)
      * public void ClearCurrentPath()
      * public void FindPath(Tiles location)
@@ -31,6 +32,13 @@ abstract public class Agent<T> : MonoBehaviour
     public Tiles GetLocation()
     {
         return location;
+    }
+
+    public void ChangeLocation(Tiles location)
+    {
+        this.location = location;
+        currentLocation = tilingSystem.locations[(int)location];
+        transform.position = new Vector3((currentLocation.x - tilingSystem.CurrentPosition.x) * tilingSystem.tileSize, (currentLocation.y - tilingSystem.CurrentPosition.y) * tilingSystem.tileSize, 0);
     }
 
     public void ChangeState(State<T> state)

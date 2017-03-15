@@ -62,7 +62,8 @@ public class SenseManager : MonoBehaviour
 
             // Probably only need to do intensity as signal.strength - the cost in the astar search and if less than threshold
             Vector3 current_position = sensor.gameObject.transform.position;
-            Vector2 current_location = new Vector2(current_position.x + tilingSystem.CurrentPosition.x, current_position.y + tilingSystem.CurrentPosition.y);
+            // Need to confirm this is correct
+            Vector2 current_location = new Vector2(current_position.x/tilingSystem.tileSize + tilingSystem.CurrentPosition.x, current_position.y/tilingSystem.tileSize + tilingSystem.CurrentPosition.y);
             SquareGrid mapGrid = tilingSystem.mapGrid;
             // Path from signal to sensor
             AStarSearch sensePath = new AStarSearch(mapGrid, mapGrid.nodeSet[new Coordinates((int)signal.position.x, (int)signal.position.y)], mapGrid.nodeSet[new Coordinates((int)current_location.x, (int)current_location.y)], signal.modality.senseType);
