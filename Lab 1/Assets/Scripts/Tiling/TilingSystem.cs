@@ -17,7 +17,6 @@ public class TilingSystem : MonoBehaviour
     public List<Vector2> locations;
 	public Sprite defaultImage;
     public SquareGrid mapGrid;
-    //public SquareGrid2 mapGrid2;
 	public Vector2 CurrentPosition;
     public Vector2 MapSize;
     public Vector2 ViewPortSize;
@@ -186,7 +185,6 @@ public class TilingSystem : MonoBehaviour
 
         _map = new TileSprite[(int)MapSize.x, (int)MapSize.y];
         mapGrid = new SquareGrid((int)MapSize.x, (int)MapSize.y);
-        //mapGrid2 = new SquareGrid2((int)MapSize.x, (int)MapSize.y);
 
         DefaultTiles();
         SetTiles();

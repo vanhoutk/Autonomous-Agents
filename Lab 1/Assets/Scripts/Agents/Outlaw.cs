@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Outlaw : Agent<Outlaw>
 {
     // Variables
-    private int goldCarried = 0;
     private GameObject controller;
+    private int goldCarried = 0;
+    private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
+    private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
+    public static string agentName = "Jesse";
 
     // Messaging events
     public delegate void BankRobbery(int amount);
@@ -18,8 +22,8 @@ public class Outlaw : Agent<Outlaw>
      * public StateMachine<Outlaw> GetFSM()
      * public void Awake()
      * public void ChangeLocation(Tiles location)
-     * public void FindPath(Tiles location)
      * public void Start()
+     * public void RespondToSenseEvent(Signal signal)
      *
      * public void DespawnOutlaw(AgentTypes type)
      * public void RespawnOutlaw(AgentTypes type)
@@ -44,6 +48,7 @@ public class Outlaw : Agent<Outlaw>
 
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
+        senseManager = controller.GetComponent<SenseManager>();
 
         stateMachine = new StateMachine<Outlaw>();
         stateMachine.Init(this, LurkInCamp.Instance, OutlawGlobalState.Instance);
@@ -64,28 +69,28 @@ public class Outlaw : Agent<Outlaw>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    /*public void FindPath(Tiles location)
-    {
-        Debug.Log("Outlaw: Start of findpath");
-        mapGrid = tilingSystem.mapGrid;
-        Debug.Log("Outlaw: MapGrid Set");
-        destination = location;
-        targetLocation = tilingSystem.locations[(int)location];
-        var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
-        currentPath = aStar;
-        Debug.Log("Outlaw: A* done...");
-    }*/
-
     public void Start()
     {
+        GameObject self = GameObject.Find(agentName);
+        if (self != null)
+        {
+            senseManager.sensors.Add(new Sensor(AgentTypes.Outlaw, self, modalities, thresholds, agentName));
+            SenseManager.NotifyOutlaw += RespondToSenseEvent;
+        }
+
         ChangeLocation(Tiles.OutlawCamp);
+    }
+
+    public void RespondToSenseEvent(Signal signal)
+    {
+        Debug.LogError("Outlaw: Oh no, a sense event!");
     }
 
     public void DespawnOutlaw(AgentTypes type)
     {
         if (type == AgentTypes.Outlaw)
         {
-            GameObject outlawObject = GameObject.Find("Jesse");
+            GameObject outlawObject = GameObject.Find(agentName);
             SpriteRenderer outlawRenderer = outlawObject.GetComponent<SpriteRenderer>();
             outlawRenderer.enabled = false;
         }
@@ -95,7 +100,7 @@ public class Outlaw : Agent<Outlaw>
     {
         if (type == AgentTypes.Outlaw)
         {
-            GameObject outlawObject = GameObject.Find("Jesse");
+            GameObject outlawObject = GameObject.Find(agentName);
             SpriteRenderer outlawRenderer = outlawObject.GetComponent<SpriteRenderer>();
             outlawRenderer.enabled = true;
             Debug.Log("Outlaw: Renderer enabled again!");

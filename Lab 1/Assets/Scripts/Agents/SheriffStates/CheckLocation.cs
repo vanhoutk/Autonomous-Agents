@@ -28,7 +28,7 @@ public sealed class CheckLocation : State<Sheriff>
 
     public override void Execute(Sheriff agent)
     {
-        GameObject outlawObject = GameObject.Find("Jesse");
+        GameObject outlawObject = GameObject.Find(Outlaw.agentName);
         if(outlawObject != null)
         {
             Outlaw outlaw = outlawObject.GetComponent<Outlaw>();

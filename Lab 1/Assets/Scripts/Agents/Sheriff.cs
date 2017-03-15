@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Sheriff : Agent<Sheriff>
 {
     // Variables
     private GameObject controller;
+    private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
+    private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
+    public static string agentName = "Wyatt";
 
     // Messaging Events
     public delegate void EncounterOutlaw();
@@ -20,8 +24,8 @@ public class Sheriff : Agent<Sheriff>
      * public StateMachine<Sheriff> GetFSM()
      * public void Awake()
      * public void ChangeLocation(Tiles location)
-     * public void FindPath(Tiles location)
      * public void Start()
+     * public void RespondToSenseEvent(Signal signal)
      *
      * public void DespawnSheriff(AgentTypes type)
      * public void RespawnSheriff(AgentTypes type)
@@ -41,6 +45,7 @@ public class Sheriff : Agent<Sheriff>
 
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
+        senseManager = controller.GetComponent<SenseManager>();
 
         stateMachine = new StateMachine<Sheriff>();
         stateMachine.Init(this, CheckLocation.Instance, SheriffGlobalState.Instance);
@@ -57,31 +62,28 @@ public class Sheriff : Agent<Sheriff>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    /*public void FindPath(Tiles location)
-    {
-        Debug.Log("Sheriff: Start of findpath");
-
-        mapGrid = tilingSystem.mapGrid;
-        Debug.Log("Sheriff: MapGrid Set");
-
-        destination = location;
-        targetLocation = tilingSystem.locations[(int)location];
-
-        var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
-        currentPath = aStar;
-        Debug.Log("Sheriff: A* done...");
-    }*/
-
     public void Start()
     {
+        GameObject self = GameObject.Find(agentName);
+        if (self != null)
+        {
+            senseManager.sensors.Add(new Sensor(AgentTypes.Sheriff, self, modalities, thresholds, agentName));
+            SenseManager.NotifySheriff += RespondToSenseEvent;
+        }
+
         ChangeLocation(Tiles.SheriffsOffice);
+    }
+
+    public void RespondToSenseEvent(Signal signal)
+    {
+        Debug.LogError("Sheriff: Oh no, a sense event!");
     }
 
     public void DespawnSheriff(AgentTypes type)
     {
         if (type == AgentTypes.Sheriff)
         {
-            GameObject sheriffObject = GameObject.Find("Wyatt");
+            GameObject sheriffObject = GameObject.Find(Outlaw.agentName);
             SpriteRenderer sheriffRenderer = sheriffObject.GetComponent<SpriteRenderer>();
             sheriffRenderer.enabled = false;
         }
@@ -91,7 +93,7 @@ public class Sheriff : Agent<Sheriff>
     {
         if (type == AgentTypes.Sheriff)
         {
-            GameObject sheriffObject = GameObject.Find("Wyatt");
+            GameObject sheriffObject = GameObject.Find(Outlaw.agentName);
             SpriteRenderer sheriffRenderer = sheriffObject.GetComponent<SpriteRenderer>();
             sheriffRenderer.enabled = true;
 

@@ -43,7 +43,7 @@ public class SenseManager : MonoBehaviour
     void AddSignal(Signal signal)
     {
         // Aggregation Phase
-        List<Sensor> valid_sensors = new List<Sensor>();
+        // List<Sensor> valid_sensors = new List<Sensor>();
         foreach(Sensor sensor in sensors)
         {
             // Check if sensor detects the signal

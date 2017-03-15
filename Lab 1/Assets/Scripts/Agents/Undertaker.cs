@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Undertaker : Agent<Undertaker>
 {
     // Variables
     private AgentTypes bodyType;
     private GameObject controller;
+    private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
+    private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
+    private string agentName = "Under";
 
     // Message Events
     public delegate void BuriedBody(AgentTypes type);
@@ -18,8 +22,6 @@ public class Undertaker : Agent<Undertaker>
      * public StateMachine<Undertaker> GetFSM()
      * public void Awake()
      * public void ChangeLocation(Tiles location)
-     * public void FindPath(Tiles location) // Find path to a particular "building"
-     * public void FindPath(Vector2 location) // Find path to a grid location
      * 
      * public void BuryBody()
      * public void CollectABody()
@@ -35,6 +37,7 @@ public class Undertaker : Agent<Undertaker>
     {
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
+        senseManager = controller.GetComponent<SenseManager>();
 
         stateMachine = new StateMachine<Undertaker>();
         stateMachine.Init(this, WaitInUndertakers.Instance);
@@ -51,39 +54,21 @@ public class Undertaker : Agent<Undertaker>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    /*public void FindPath(Tiles location)
-    {
-        Debug.Log("Undertaker: Start of FindPath - Building");
-
-        mapGrid = tilingSystem.mapGrid;
-        Debug.Log("Undertaker: MapGrid Set");
-
-        destination = location;
-        targetLocation = tilingSystem.locations[(int)location];
-
-        var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
-        currentPath = aStar;
-        Debug.Log("Undertaker: A* done...");
-    }*/
-
-    /*public void FindPath(Vector2 location)
-    {
-        Debug.Log("Undertaker: Start of FindPath - Grid Location");
-
-        mapGrid = tilingSystem.mapGrid;
-        Debug.Log("Undertaker: MapGrid Set");
-
-        destination = tilingSystem.GetTile((int)location.x, (int)location.y).tileType;
-        targetLocation = location;
-
-        var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
-        currentPath = aStar;
-        Debug.Log("Undertaker: A* done...");
-    }*/
-
     public void Start()
     {
+        GameObject self = GameObject.Find(agentName);
+        if (self != null)
+        {
+            senseManager.sensors.Add(new Sensor(AgentTypes.Undertaker, self, modalities, thresholds, agentName));
+            SenseManager.NotifyUndertaker += RespondToSenseEvent;
+        }
+
         ChangeLocation(Tiles.Undertakers);
+    }
+
+    public void RespondToSenseEvent(Signal signal)
+    {
+        Debug.LogError("Undertaker: Oh no, a sense event!");
     }
 
     public void BuryBody()
@@ -106,7 +91,7 @@ public class Undertaker : Agent<Undertaker>
         {
             Debug.Log("Undertaker: The Sheriff has killed the Outlaw!");
 
-            GameObject outlawObject = GameObject.Find("Jesse");
+            GameObject outlawObject = GameObject.Find(Outlaw.agentName);
             Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
 
             // Clear the current path if we have one
@@ -119,7 +104,7 @@ public class Undertaker : Agent<Undertaker>
         else
         {
             Debug.Log("Undertaker: The Outlaw has killed the Sheriff!");
-            GameObject sheriffObject = GameObject.Find("Wyatt");
+            GameObject sheriffObject = GameObject.Find(Sheriff.agentName);
             Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
 
             // Clear the current path if we have one

@@ -17,7 +17,7 @@ public class Miner : Agent<Miner>
     private GameObject controller;
     private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
-    private string agentName = "Miner";
+    public static string agentName = "Miner";
 
     // Functions
     /*
@@ -31,10 +31,10 @@ public class Miner : Agent<Miner>
      *
      * public StateMachine<Miner> GetFSM()
      * public void Awake()
-     * public void ChangeLocation(Tiles location) // Not used anymore
-     * public void FindPath(Tiles location)
+     * public void ChangeLocation(Tiles location)
      * public void Start()
      * public void RespondToBankRobbery()
+     * public void RespondToSenseEvent(Signal signal)
      *
      * public void AddToBank(int amount)
      * public void AddToGoldCarried(int amount)
@@ -103,21 +103,9 @@ public class Miner : Agent<Miner>
         transform.position = new Vector3(currentLocation.x - tilingSystem.CurrentPosition.x, currentLocation.y - tilingSystem.CurrentPosition.y, 0);
     }
 
-    /*public void FindPath(Tiles location)
-    {
-        Debug.Log("Miner: Start of findpath");
-        mapGrid = tilingSystem.mapGrid;
-        Debug.Log("Miner: MapGrid Set");
-        destination = location;
-        targetLocation = tilingSystem.locations[(int)location];
-        var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
-        currentPath = aStar;
-        Debug.Log("Miner: A* done...");
-    }*/
-
     public void Start()
     {
-        GameObject self = GameObject.Find("Miner");
+        GameObject self = GameObject.Find(agentName);
         if (self != null)
         {
             senseManager.sensors.Add(new Sensor(AgentTypes.Miner, self, modalities, thresholds, agentName));
