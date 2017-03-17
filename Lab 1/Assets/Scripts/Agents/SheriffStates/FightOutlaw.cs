@@ -22,13 +22,26 @@ public sealed class FightOutlaw : State<Sheriff>
 
     public override void Execute(Sheriff agent)
     {
-        agent.ShootOutlaw();
-        agent.Log("I just killed the outlaw!");
-        agent.SearchOutlaw();
-        agent.Log("Best get this money back to the bank!");
-        agent.FindPath(Tiles.Bank);
-        agent.nextState = ReturnMoneyToBank.Instance;
-        agent.ChangeState(Movement<Sheriff>.Instance);
+        if (agent.isAlive)
+        {
+            GameObject outlawObject = GameObject.Find(Outlaw.agentName);
+            Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
+
+            if (outlaw.isAlive)
+            {
+                agent.Log("I'm gonna kill this filthy outlaw!");
+                agent.ShootOutlaw();
+            }
+            else
+            {
+                agent.SearchOutlaw(AgentTypes.Outlaw);
+            }
+        }
+        else
+        {
+            if (agent.stateMachine.GetState() != Dead<Sheriff>.Instance)
+                agent.ChangeState(Dead<Sheriff>.Instance);
+        }
     }
 
     public override void Exit(Sheriff agent)

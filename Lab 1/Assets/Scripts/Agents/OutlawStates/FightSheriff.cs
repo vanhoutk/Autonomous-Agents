@@ -24,7 +24,18 @@ public sealed class FightSheriff : State<Outlaw>
     {
         if(agent.isAlive)
         {
-            agent.Log("Dodgin' bullets and shootin' sheriffs!");
+            GameObject sheriffObject = GameObject.Find(Sheriff.agentName);
+            Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
+
+            if(sheriff.isAlive)
+            {
+                agent.Log("Dodgin' bullets and shootin' sheriffs!");
+                agent.ShootSheriff();
+            }
+            else
+            {
+                agent.SearchSheriff(AgentTypes.Sheriff);
+            }
         }
         else
         {

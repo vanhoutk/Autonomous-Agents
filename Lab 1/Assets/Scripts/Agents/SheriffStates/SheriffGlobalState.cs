@@ -33,7 +33,7 @@ public sealed class SheriffGlobalState : State<Sheriff>
         {
             Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
 
-            if (agent.nextState != FightOutlaw.Instance && agent.stateMachine.GetState() != FightOutlaw.Instance && outlaw.isAlive)
+            if (agent.nextState != FightOutlaw.Instance && agent.stateMachine.GetState() != FightOutlaw.Instance && outlaw.isAlive && agent.isAlive)
             {
                 if (Distance(agent.currentLocation, outlaw.currentLocation) <= 1.0)
                 {

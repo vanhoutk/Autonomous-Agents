@@ -22,7 +22,7 @@ public sealed class OutlawGlobalState : State<Outlaw>
 
     public override void Execute(Outlaw agent)
     {
-        if(agent.nextState != RobBank.Instance && agent.isAlive)
+        if(agent.nextState != RobBank.Instance && agent.isAlive && agent.stateMachine.GetState() != FightSheriff.Instance)
         {
             if (Random.Range(0.0f, 1.0f) < 0.005f)
             {

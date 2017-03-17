@@ -6,8 +6,13 @@ public class Outlaw : Agent<Outlaw>
     // Variables
     private GameObject controller;
     private int goldCarried = 0;
+    private int health = 5;
     private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
+    private Sprite corpseSprite;
+    private Sprite sprite;
+    private Texture2D corpseTexture;
+    private Texture2D texture;
 
     // Messaging events
     public delegate void BankRobbery(int amount);
@@ -15,6 +20,9 @@ public class Outlaw : Agent<Outlaw>
 
     public delegate void OutlawDead(AgentTypes type);
     public static event OutlawDead OnOutlawDead;
+
+    public delegate void OutlawShoots(int damage);
+    public static event OutlawShoots OnOutlawShoots;
 
     // Functions
     /* 
@@ -53,8 +61,15 @@ public class Outlaw : Agent<Outlaw>
         stateMachine = new StateMachine<Outlaw>();
         stateMachine.Init(this, LurkInCamp.Instance, OutlawGlobalState.Instance);
 
+        // Set up the sprites
+        corpseTexture = Resources.Load<Texture2D>("outlawcorpse");
+        texture = Resources.Load<Texture2D>("outlaw");
+        corpseSprite = Sprite.Create(corpseTexture, new Rect(0, 0, corpseTexture.width, corpseTexture.height), new Vector2(0.5f, 0.5f));
+        sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
         // Subscribe to the sheriff's messages
         Sheriff.OnEncounterOutlaw += StartFight;
+        Sheriff.OnSheriffDead += SearchSheriff;
         Sheriff.OnSheriffShoots += TakeDamage;
 
         // Subscribe to the undertaker's messages
@@ -95,10 +110,11 @@ public class Outlaw : Agent<Outlaw>
         {
             GameObject outlawObject = GameObject.Find(agentName);
             SpriteRenderer outlawRenderer = outlawObject.GetComponent<SpriteRenderer>();
+            outlawRenderer.sprite = sprite;
             outlawRenderer.enabled = true;
-            Log("Renderer enabled again!");
 
             isAlive = true;
+            health = 5;
 
             ChangeLocation(Tiles.OutlawCamp);
             ChangeState(LurkInCamp.Instance);
@@ -118,10 +134,34 @@ public class Outlaw : Agent<Outlaw>
         senseManager.AddSignal(new Signal(40, new Hearing(), SenseEvents.BankRobbery, currentLocation));
     }
 
+    public void SearchSheriff(AgentTypes agentType)
+    {
+        GameObject sheriffObject = GameObject.Find(Sheriff.agentName);
+        Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
+        goldCarried = sheriff.GetGoldCarried();
+        sheriff.SetGoldCarried(0);
+
+        Log("Gonna go lurk in my camp again!");
+        FindPath(Tiles.OutlawCamp);
+        nextState = LurkInCamp.Instance;
+        ChangeState(Movement<Outlaw>.Instance);
+    }
+
+    public void ShootSheriff()
+    {
+        int damage = Random.Range(0, 3);
+        if (OnOutlawShoots != null)
+            OnOutlawShoots(damage);
+    }
+
     public void ShotBySheriff()
     {
         Log("I just got shot by the Sheriff!");
         isAlive = false;
+
+        GameObject outlawObject = GameObject.Find(agentName);
+        SpriteRenderer outlawRenderer = outlawObject.GetComponent<SpriteRenderer>();
+        outlawRenderer.sprite = corpseSprite;
 
         if (OnOutlawDead != null)
             OnOutlawDead(AgentTypes.Outlaw);
@@ -138,7 +178,8 @@ public class Outlaw : Agent<Outlaw>
 
     public void TakeDamage(int damage)
     {
-        if (damage >= 0)
+        health -= damage;
+        if (health <= 0)
             ShotBySheriff();
     }
 

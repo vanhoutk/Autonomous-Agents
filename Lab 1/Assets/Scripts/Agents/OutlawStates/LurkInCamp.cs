@@ -22,7 +22,7 @@ public sealed class LurkInCamp : State<Outlaw>
 
     public override void Execute(Outlaw agent)
     {
-        if (Random.Range(0.0f, 1.0f) < 0.2f)
+        if (Random.Range(0.0f, 1.0f) < 0.05f)
         {
             agent.Log("Gonna go lurk in the cemetery!");
             agent.FindPath(Tiles.Cemetery);
