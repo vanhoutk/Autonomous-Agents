@@ -5,7 +5,6 @@ using UnityEngine;
 public class TileSprite
 {
     // Variables
-    public int movementCost;
     public Sprite tileImage;
     public SpriteRenderer renderer;
     public string tileName;
@@ -14,7 +13,7 @@ public class TileSprite
     // Functions
     /*
      * public TileSprite()
-     * public TileSprite(int moveCost, string name, Sprite image, Tiles type)
+     * public TileSprite(string name, Sprite image, Tiles type)
      * public TileSprite(TileSprite tileSprite)
      *
      * public void ClearPathColor(int x, int y, float height)
@@ -23,15 +22,13 @@ public class TileSprite
 
     public TileSprite()
     {
-        movementCost = 1;
         tileName = "Unset";
         tileImage = new Sprite();
         tileType = Tiles.Unset;
     }
 
-    public TileSprite(int moveCost, string name, Sprite image, Tiles type)
+    public TileSprite(string name, Sprite image, Tiles type)
     {
-        movementCost = moveCost;
         tileName = name;
         tileImage = image;
         tileType = type;
@@ -39,7 +36,6 @@ public class TileSprite
 
     public TileSprite(TileSprite tileSprite)
     {
-        movementCost = tileSprite.movementCost;
         tileName = tileSprite.tileName;
         tileImage = tileSprite.tileImage;
         tileType = tileSprite.tileType;

@@ -8,7 +8,6 @@ public class Outlaw : Agent<Outlaw>
     private int goldCarried = 0;
     private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
-    public static string agentName = "Jesse";
 
     // Messaging events
     public delegate void BankRobbery(int amount);
@@ -43,6 +42,8 @@ public class Outlaw : Agent<Outlaw>
 
     public void Awake()
     {
+        agentName = "Jesse";
+
         isAlive = true;
 
         controller = GameObject.Find("Controller");
@@ -66,7 +67,7 @@ public class Outlaw : Agent<Outlaw>
         GameObject self = GameObject.Find(agentName);
         if (self != null)
         {
-            senseManager.sensors.Add(new Sensor(AgentTypes.Outlaw, self, modalities, thresholds, agentName));
+            senseManager.sensors.Add(agentName, new Sensor(AgentTypes.Outlaw, self, modalities, thresholds));
             SenseManager.NotifyOutlaw += RespondToSenseEvent;
         }
 
@@ -75,7 +76,7 @@ public class Outlaw : Agent<Outlaw>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.Log("Outlaw: Oh no, a sense event!");
+        Log("Oh no, a sense event!");
     }
 
     public void DespawnOutlaw(AgentTypes type)
@@ -95,7 +96,7 @@ public class Outlaw : Agent<Outlaw>
             GameObject outlawObject = GameObject.Find(agentName);
             SpriteRenderer outlawRenderer = outlawObject.GetComponent<SpriteRenderer>();
             outlawRenderer.enabled = true;
-            Debug.Log("Outlaw: Renderer enabled again!");
+            Log("Renderer enabled again!");
 
             isAlive = true;
 
@@ -104,7 +105,7 @@ public class Outlaw : Agent<Outlaw>
         }
         else
         {
-            Debug.Log("Outlaw: I hear there's a new Sheriff in town!");
+            Log("I hear there's a new Sheriff in town!");
         }
     }
 
@@ -114,11 +115,12 @@ public class Outlaw : Agent<Outlaw>
         goldCarried += stolen_amount;
         if (OnBankRobbery != null)
             OnBankRobbery(stolen_amount);
+        senseManager.AddSignal(new Signal(40, new Hearing(), SenseEvents.BankRobbery, currentLocation));
     }
 
     public void ShotBySheriff()
     {
-        Debug.Log("Outlaw: I just got shot by the Sheriff!");
+        Log("I just got shot by the Sheriff!");
         isAlive = false;
 
         if (OnOutlawDead != null)

@@ -17,17 +17,17 @@ public sealed class WaitInSheriffOffice : State<Sheriff>
 
     public override void Enter(Sheriff agent)
     {
-        Debug.Log("Sheriff: Arrived at my office!");
+        agent.Log("Arrived at my office!");
     }
 
     public override void Execute(Sheriff agent)
     {
         // Do nothing until a new outlaw spawns
-        Debug.Log("Sheriff: Just waiting in my office!");
+        agent.Log("Just waiting in my office!");
     }
 
     public override void Exit(Sheriff agent)
     {
-        Debug.Log("Sheriff: Leaving my office.");
+        agent.Log("Leaving my office.");
     }
 }

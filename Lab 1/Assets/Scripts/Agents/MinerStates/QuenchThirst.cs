@@ -17,7 +17,7 @@ public sealed class QuenchThirst : State<Miner>
 
     public override void Enter(Miner agent)
     {
-        Debug.Log("Miner: Boy, ah sure is thirsty! I'm finally at the saloon.");
+        agent.Log("Boy, ah sure is thirsty! I'm finally at the saloon.");
     }
 
     public override void Execute(Miner agent)
@@ -25,19 +25,19 @@ public sealed class QuenchThirst : State<Miner>
         if (agent.Thirsty())
         {
             agent.BuyAndDrinkWhiskey();
-            Debug.Log("Miner: That's mighty fine sippin liquer! Now back to work for me!");
+            agent.Log("That's mighty fine sippin liquer! Now back to work for me!");
             agent.FindPath(Tiles.GoldMine);
             agent.nextState = EnterMineAndDigForNugget.Instance;
             agent.ChangeState(Movement<Miner>.Instance);
         }
         else
         {
-            Debug.Log("Miner: ERROR! ERROR! ERROR!");
+            agent.Log("ERROR! ERROR! ERROR!");
         }
     }
 
     public override void Exit(Miner agent)
     {
-        Debug.Log("Miner: Leavin' the saloon, feelin' good!");
+        agent.Log("Leavin' the saloon, feelin' good!");
     }
 }

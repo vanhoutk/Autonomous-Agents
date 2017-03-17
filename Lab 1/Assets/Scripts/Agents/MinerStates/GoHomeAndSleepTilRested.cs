@@ -17,14 +17,14 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
 
     public override void Enter(Miner agent)
     {
-        Debug.Log("Miner: Walkin' home");
+        agent.Log("Just got home.");
     }
 
     public override void Execute(Miner agent)
     {
         if (!agent.Fatigued())
         {
-            Debug.Log("Miner: What a God darn fantastic nap! Time to find more gold.");
+            agent.Log("What a God darn fantastic nap! Time to find more gold.");
             agent.FindPath(Tiles.GoldMine);
             agent.nextState = EnterMineAndDigForNugget.Instance;
             agent.ChangeState(Movement<Miner>.Instance);
@@ -32,12 +32,12 @@ public sealed class GoHomeAndSleepTilRested : State<Miner>
         else
         {
             agent.DecreaseFatigue();
-            Debug.Log("Miner: Zzz...");
+            agent.Log("Zzz...");
         }
     }
 
     public override void Exit(Miner agent)
     {
-        Debug.Log("Miner: Leavin' the house.");
+        agent.Log("Leavin' the house.");
     }
 }

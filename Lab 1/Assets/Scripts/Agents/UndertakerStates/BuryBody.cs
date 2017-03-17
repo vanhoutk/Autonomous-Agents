@@ -18,7 +18,7 @@ public sealed class BuryBody : State<Undertaker>
 
     public override void Enter(Undertaker agent)
     {
-        Debug.Log("Undertaker: I've arrived at the cemetery.");
+        agent.Log("I've arrived at the cemetery.");
     }
 
     public override void Execute(Undertaker agent)
@@ -26,19 +26,19 @@ public sealed class BuryBody : State<Undertaker>
         if (Random.Range(0.0f, 1.0f) < 0.2f) // Take a random amount of "time" to bury the body
         {
             agent.BuryBody();
-            Debug.Log("Undertaker: All done! Back to the office for me.");
+            agent.Log("All done! Back to the office for me.");
             agent.FindPath(Tiles.Undertakers);
             agent.nextState = WaitInUndertakers.Instance;
             agent.ChangeState(Movement<Undertaker>.Instance);
         }
         else
         {
-            Debug.Log("Undertaker: Diggin' this grave!");
+            agent.Log("Diggin' this grave!");
         }
     }
 
     public override void Exit(Undertaker agent)
     {
-        Debug.Log("Undertaker: Leaving the cemetery.");
+        agent.Log("Leaving the cemetery.");
     }
 }

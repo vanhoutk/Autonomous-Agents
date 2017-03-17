@@ -17,7 +17,7 @@ public sealed class VisitBankAndDepositGold : State<Miner>
 
     public override void Enter(Miner agent)
     {
-        Debug.Log("Miner: I've arrived at the bank!");
+        agent.Log("I've arrived at the bank!");
     }
 
     public override void Execute(Miner agent)
@@ -25,18 +25,18 @@ public sealed class VisitBankAndDepositGold : State<Miner>
         agent.AddToBank(agent.GetGoldCarried());
         agent.SetGoldCarried(0);
 
-        Debug.Log("Miner: Depositing gold. Total savings now: " + agent.GetMoneyInBank());
+        agent.Log("Depositing gold. Total savings now: " + agent.GetMoneyInBank());
 
         if (agent.WealthyEnough())
         {
-            Debug.Log("Miner: WooHoo! Rich enough for now.");
+            agent.Log("WooHoo! Rich enough for now.");
             agent.FindPath(Tiles.Shack);
             agent.nextState = GoHomeAndSleepTilRested.Instance;
             agent.ChangeState(Movement<Miner>.Instance);
         }
         else
         {
-            Debug.Log("Miner: Time to mine more gold!");
+            agent.Log("Time to mine more gold!");
             agent.FindPath(Tiles.GoldMine);
             agent.nextState = EnterMineAndDigForNugget.Instance;
             agent.ChangeState(Movement<Miner>.Instance);
@@ -45,6 +45,6 @@ public sealed class VisitBankAndDepositGold : State<Miner>
 
     public override void Exit(Miner agent)
     {
-        Debug.Log("Miner: Leavin' the bank.");
+        agent.Log("Leavin' the bank.");
     }
 }

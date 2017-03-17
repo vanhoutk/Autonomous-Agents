@@ -95,6 +95,8 @@
     <Compile Include="Assets\Scripts\Agents\Sheriff.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\CheckLocation.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\FightOutlaw.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\RelaxInSaloon.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\ReturnMoneyToBank.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\SheriffGlobalState.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\WaitInSheriffOffice.cs" />
     <Compile Include="Assets\Scripts\Agents\State.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Assets\Scripts\PathFinding\Pathfinding.cs" />
     <Compile Include="Assets\Scripts\Sensing\Hearing.cs" />
     <Compile Include="Assets\Scripts\Sensing\Sense.cs" />
+    <Compile Include="Assets\Scripts\Sensing\SenseEvents.cs" />
     <Compile Include="Assets\Scripts\Sensing\SenseManager.cs" />
     <Compile Include="Assets\Scripts\Sensing\SenseTypes.cs" />
     <Compile Include="Assets\Scripts\Sensing\Sensor.cs" />

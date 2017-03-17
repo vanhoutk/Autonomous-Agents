@@ -1,7 +1,6 @@
-﻿public abstract class Sense
+﻿abstract public class Sense
 {
     public double inverseTransmissionSpeed;
-    public double maximumRange; // Possibly not necessary
     public SenseTypes senseType;
     public Sensor sensor; //Agent that is sensed
 

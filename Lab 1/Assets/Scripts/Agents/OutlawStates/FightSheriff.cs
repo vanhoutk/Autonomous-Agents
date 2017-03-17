@@ -17,14 +17,14 @@ public sealed class FightSheriff : State<Outlaw>
 
     public override void Enter(Outlaw agent)
     {
-        Debug.Log("Outlaw: Time to kill this sheriff!");
+        agent.Log("Time to kill this sheriff!");
     }
 
     public override void Execute(Outlaw agent)
     {
         if(agent.isAlive)
         {
-            Debug.Log("Outlaw: Dodgin' bullets and shootin' sheriffs!");
+            agent.Log("Dodgin' bullets and shootin' sheriffs!");
         }
         else
         {

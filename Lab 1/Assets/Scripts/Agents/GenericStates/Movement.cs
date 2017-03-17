@@ -17,7 +17,7 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
 
     public override void Enter(T agent)
     {
-        //Debug.Log("Starting to walk!");
+        agent.Log("Starting to walk!");
     }
 
     public override void Execute(T agent)
@@ -26,10 +26,8 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
         if (agent.moveDelay == 0)
         {
             agent.moveDelay = 10;
-
-            //Node currentNode = new Node((int)agent.currentLocation.x, (int)agent.currentLocation.y);
+            
             Node currentNode = agent.mapGrid.nodeSet[new Coordinates((int)agent.currentLocation.x, (int)agent.currentLocation.y)];
-            //Node nextNode = new Node((int)agent.targetLocation.x, (int)agent.targetLocation.y);
             Node nextNode = agent.mapGrid.nodeSet[new Coordinates((int)agent.targetLocation.x, (int)agent.targetLocation.y)];
             Node parentNode = agent.currentPath.cameFrom[nextNode];
 
@@ -57,6 +55,6 @@ public sealed class Movement<T>: State<T> where T : Agent<T>
 
     public override void Exit(T agent)
     {
-        //Debug.Log("Arriving at my destination!");
+        agent.Log("Arriving at my destination!");
     }
 }

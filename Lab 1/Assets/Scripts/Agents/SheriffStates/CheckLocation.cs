@@ -23,7 +23,7 @@ public sealed class CheckLocation : State<Sheriff>
 
     public override void Enter(Sheriff agent)
     {
-        Debug.Log("Sheriff: Arrived at a location!");
+        agent.Log("Arrived at a location!");
     }
 
     public override void Execute(Sheriff agent)
@@ -43,7 +43,7 @@ public sealed class CheckLocation : State<Sheriff>
             }
             else if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.2f)
             {
-                Debug.Log("Sheriff: Going to check the next location!");
+                agent.Log("Going to check the next location!");
                 int nextLocation;
                 do
                 {
@@ -56,12 +56,12 @@ public sealed class CheckLocation : State<Sheriff>
             }
             else
             {
-                Debug.Log("Sheriff: Just checking out this location!");
+                agent.Log("Just checking out this location!");
             }
         }
         else if (UnityEngine.Random.Range(0.0f, 1.0f) < 0.2f)
         {
-            Debug.Log("Sheriff: Going to check the next location!");
+            agent.Log("Going to check the next location!");
             int nextLocation;
             do
             {
@@ -74,12 +74,12 @@ public sealed class CheckLocation : State<Sheriff>
         }
         else
         {
-            Debug.Log("Sheriff: Just checking out this location!");
+            agent.Log("Just checking out this location!");
         }
     }
 
     public override void Exit(Sheriff agent)
     {
-        Debug.Log("Sheriff: Leaving this location.");
+        agent.Log("Leaving this location.");
     }
 }

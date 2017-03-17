@@ -2,13 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public interface WeightedGraph<T>
-{
-    double MovementCost(T a, T b);
-    double SenseCost(T a, T b, SenseTypes type);
-    IEnumerable<T> Neighbours(T id);
-}
-
 public struct Coordinates
 {
     public int x, y;
@@ -60,8 +53,16 @@ public struct Node
     }
 }
 
+public interface WeightedGraph<T>
+{
+    double MovementCost(T a, T b);
+    double SenseCost(T a, T b, SenseTypes type);
+    IEnumerable<T> Neighbours(T id);
+}
+
 public class SquareGrid : WeightedGraph<Node>
 {
+    // Variables
     private static readonly Coordinates[] DIRECTIONS = new[]
         {
             new Coordinates(1, 0),
@@ -73,18 +74,18 @@ public class SquareGrid : WeightedGraph<Node>
     public int width, height;
     public Dictionary<Coordinates, Node> nodeSet = new Dictionary<Coordinates, Node>();
 
-    //public HashSet<Node> mountains = new HashSet<Node>();
-
-    public SquareGrid(int width, int height)
-    {
-        this.width = width;
-        this.height = height;
-    }
+    // Functions
+    /*
+     * public bool InBounds(Coordinates coords)
+     * public double MovementCost(Node a, Node b)
+     * public double SenseCost(Node a, Node b, SenseTypes senseType)
+     * public IEnumerable<Node> Neighbours(Node node)
+     * public SquareGrid(int width, int height)
+     */
 
     public bool InBounds(Coordinates coords)
     {
-        return 0 <= coords.x && coords.x < width
-            && 0 <= coords.y && coords.y < height;
+        return 0 <= coords.x && coords.x < width && 0 <= coords.y && coords.y < height;
     }
 
     public double MovementCost(Node a, Node b)
@@ -100,7 +101,6 @@ public class SquareGrid : WeightedGraph<Node>
             return b.attenuationData.sightAttenuation;
         if (senseType == SenseTypes.Smell)
             return b.attenuationData.smellAttenuation;
-
         return 0;
     }
 
@@ -109,38 +109,56 @@ public class SquareGrid : WeightedGraph<Node>
         foreach (var dir in DIRECTIONS)
         {
             Coordinates next = new Coordinates(node.coordinates.x + dir.x, node.coordinates.y + dir.y);
-            if (InBounds(next)/* && Passable(next)*/)
+            if (InBounds(next))
             {
                 if (nodeSet.ContainsKey(next))
                     yield return nodeSet[next];
             }
         }
     }
+
+    public SquareGrid(int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+    }
 }
 
 public class AStarSearch
 {
+    // Variables
+    private static float straightMovementCost = 1.0f;
+    private static float diagonalMovementCost = 1.0f;
+
     public Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
     public Dictionary<Node, double> gScore = new Dictionary<Node, double>();
 
-    static float straightMovementCost = 1.0f;
-    static float diagonalMovementCost = 1.0f;
+    // Functions
+    /*
+     * public double ComplexDiagonalHeuristic(Node a, Node b)
+     * public double ManhattanHeuristic(Node a, Node b)
+     * public double SimpleDiagonalHeuristic(Node a, Node b)
+     * private Node SmallestNode(Dictionary<Node, double> set)
+     * 
+     * public AStarSearch(WeightedGraph<Node> graph, Node start, Node goal)
+     * public AStarSearch(WeightedGraph<Node> graph, Node start, Node goal, SenseTypes senseType)
+     */
 
-    static public double ManhattanHeuristic(Node a, Node b)
-    {
-        return straightMovementCost * Math.Abs(a.coordinates.x - b.coordinates.x) + Math.Abs(a.coordinates.y - b.coordinates.y);
-    }
-
-    static public double SimpleDiagonalHeuristic(Node a, Node b)
-    {
-        return straightMovementCost * Math.Max(Math.Abs(a.coordinates.x - b.coordinates.x), Math.Abs(a.coordinates.y - b.coordinates.y));
-    }
-
-    static public double ComplexDiagonalHeuristic(Node a, Node b)
+    public double ComplexDiagonalHeuristic(Node a, Node b)
     {
         double h_diagonal = Math.Min(Math.Abs(a.coordinates.x - b.coordinates.x), Math.Abs(a.coordinates.y - b.coordinates.y));
         double h_straight = ManhattanHeuristic(a, b);
         return (diagonalMovementCost * h_diagonal) + (straightMovementCost * (h_straight - 2 * h_diagonal));
+    }
+
+    public double ManhattanHeuristic(Node a, Node b)
+    {
+        return straightMovementCost * Math.Abs(a.coordinates.x - b.coordinates.x) + Math.Abs(a.coordinates.y - b.coordinates.y);
+    }
+
+    public double SimpleDiagonalHeuristic(Node a, Node b)
+    {
+        return straightMovementCost * Math.Max(Math.Abs(a.coordinates.x - b.coordinates.x), Math.Abs(a.coordinates.y - b.coordinates.y));
     }
 
     private Node SmallestNode(Dictionary<Node, double> set)
@@ -234,6 +252,7 @@ public class AStarSearch
                 else if (!open_set.ContainsKey(next) && !closed_set.ContainsKey(next))
                 {
                     gScore[next] = new_cost;
+                    
                     // TODO: Possibly change heuristic based on the sense in question
                     double f_score = new_cost + ComplexDiagonalHeuristic(next, goal);
                     open_set.Add(next, f_score);

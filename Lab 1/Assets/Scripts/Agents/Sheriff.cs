@@ -5,9 +5,9 @@ public class Sheriff : Agent<Sheriff>
 {
     // Variables
     private GameObject controller;
+    private int goldCarried = 0;
     private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
-    public static string agentName = "Wyatt";
 
     // Messaging Events
     public delegate void EncounterOutlaw();
@@ -28,6 +28,8 @@ public class Sheriff : Agent<Sheriff>
      *
      * public void DespawnSheriff(AgentTypes type)
      * public void RespawnSheriff(AgentTypes type)
+     * public void ReturnGold()
+     * public void SearchOutlaw()
      * public void ShootOutlaw()
      * public void ShotByOutlaw()
      * public void YellAtOutlaw()
@@ -40,6 +42,8 @@ public class Sheriff : Agent<Sheriff>
 
     public void Awake()
     {
+        agentName = "Wyatt";
+
         isAlive = true;
 
         controller = GameObject.Find("Controller");
@@ -59,7 +63,7 @@ public class Sheriff : Agent<Sheriff>
         GameObject self = GameObject.Find(agentName);
         if (self != null)
         {
-            senseManager.sensors.Add(new Sensor(AgentTypes.Sheriff, self, modalities, thresholds, agentName));
+            senseManager.sensors.Add(agentName, new Sensor(AgentTypes.Sheriff, self, modalities, thresholds));
             SenseManager.NotifySheriff += RespondToSenseEvent;
         }
 
@@ -68,14 +72,19 @@ public class Sheriff : Agent<Sheriff>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.Log("Sheriff: Oh no, a sense event!");
+        if(signal.senseEvent == SenseEvents.BankRobbery)
+        {
+            Log("That's the bank alarm!");
+        }
+        else
+            Log("Oh no, a sense event!");
     }
 
     public void DespawnSheriff(AgentTypes type)
     {
         if (type == AgentTypes.Sheriff)
         {
-            GameObject sheriffObject = GameObject.Find(Outlaw.agentName);
+            GameObject sheriffObject = GameObject.Find(agentName);
             SpriteRenderer sheriffRenderer = sheriffObject.GetComponent<SpriteRenderer>();
             sheriffRenderer.enabled = false;
         }
@@ -85,7 +94,7 @@ public class Sheriff : Agent<Sheriff>
     {
         if (type == AgentTypes.Sheriff)
         {
-            GameObject sheriffObject = GameObject.Find(Outlaw.agentName);
+            GameObject sheriffObject = GameObject.Find(agentName);
             SpriteRenderer sheriffRenderer = sheriffObject.GetComponent<SpriteRenderer>();
             sheriffRenderer.enabled = true;
 
@@ -96,11 +105,25 @@ public class Sheriff : Agent<Sheriff>
         }
         else
         {
-            Debug.Log("Sheriff: I hear there's a new Outlaw in town!");
+            Log("I hear there's a new Outlaw in town!");
 
             if(stateMachine.GetState() != CheckLocation.Instance)
                 ChangeState(CheckLocation.Instance);
         }
+    }
+
+    public void ReturnGold()
+    {
+        // The Bank decide not to tell Bob his money has been returned, so just set goldCarried to zero
+        goldCarried = 0;
+    }
+
+    public void SearchOutlaw()
+    {
+        GameObject outlawObject = GameObject.Find(Outlaw.agentName);
+        Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
+        goldCarried = outlaw.GetGoldCarried();
+        outlaw.SetGoldCarried(0);
     }
 
     public void ShootOutlaw()

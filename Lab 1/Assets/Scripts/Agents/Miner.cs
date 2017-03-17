@@ -15,9 +15,9 @@ public class Miner : Agent<Miner>
     private int fatigue = 0;
 
     private GameObject controller;
+    private GameObject self;
     private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
-    public static string agentName = "Miner";
 
     // Functions
     /*
@@ -86,6 +86,8 @@ public class Miner : Agent<Miner>
 
     public void Awake()
     {
+        agentName = "Bob";
+
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
         senseManager = controller.GetComponent<SenseManager>();
@@ -97,10 +99,10 @@ public class Miner : Agent<Miner>
 
     public void Start()
     {
-        GameObject self = GameObject.Find(agentName);
+        self = GameObject.Find(agentName);
         if (self != null)
         {
-            senseManager.sensors.Add(new Sensor(AgentTypes.Miner, self, modalities, thresholds, agentName));
+            senseManager.sensors.Add(agentName, new Sensor(AgentTypes.Miner, self, modalities, thresholds));
             SenseManager.NotifyMiner += RespondToSenseEvent;
         }
 
@@ -113,12 +115,12 @@ public class Miner : Agent<Miner>
             moneyInBank = 0;
         else
             moneyInBank -= amount;
-        Debug.Log("Miner: My Money!");
+        Log("That Outlaw stole my Money!");
     }
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.Log("Miner: Oh no, a sense event!");
+        Log("Oh no, a sense event!");
     }
 
     public void AddToBank(int amount)
@@ -137,11 +139,30 @@ public class Miner : Agent<Miner>
     {
         thirst = 0;
         moneyInBank -= 2;
+
+        // Update sensory perceptiveness values
+        if (self != null)
+        {
+            senseManager.sensors.Remove(agentName);
+            thresholds[0] = 5.0; // Reduce ability to see and hear
+            thresholds[1] = 5.0;
+            senseManager.sensors.Add(agentName, new Sensor(AgentTypes.Miner, self, modalities, thresholds));
+        }
+            
     }
 
     public void DecreaseFatigue()
     {
         fatigue = 0;
+
+        // Return sensory perceptiveness to normal
+        if (self != null)
+        {
+            senseManager.sensors.Remove(agentName);
+            thresholds[0] = 10.0; // Reduce ability to see and hear
+            thresholds[1] = 10.0;
+            senseManager.sensors.Add(agentName, new Sensor(AgentTypes.Miner, self, modalities, thresholds));
+        }
     }
 
     public void IncreaseFatigue()

@@ -11,6 +11,7 @@ abstract public class Agent<T> : MonoBehaviour
     public State<T> nextState;
     public State<T> previousState;
     public StateMachine<T> stateMachine;
+    public static string agentName;
     public Tiles destination;
     public Tiles location;
     public Tiles previousLocation;
@@ -26,6 +27,7 @@ abstract public class Agent<T> : MonoBehaviour
      * public void ClearCurrentPath()
      * public void FindPath(Tiles location)
      * public void FindPath(Vector2 location)
+     * public void Log(string message)
      * public void Update()
      */
 
@@ -48,12 +50,9 @@ abstract public class Agent<T> : MonoBehaviour
 
     public void ClearCurrentPath()
     {
-        //Node currentNode = new Node((int)currentLocation.x, (int)currentLocation.y);
         Node currentNode = mapGrid.nodeSet[new Coordinates((int)currentLocation.x, (int)currentLocation.y)];
-        //Node nextNode = new Node((int)targetLocation.x, (int)targetLocation.y);
         Node nextNode = mapGrid.nodeSet[new Coordinates((int)targetLocation.x, (int)targetLocation.y)];
         Node parentNode = currentPath.cameFrom[nextNode];
-
 
         while (!nextNode.Equals(currentNode))
         {
@@ -69,7 +68,6 @@ abstract public class Agent<T> : MonoBehaviour
         mapGrid = tilingSystem.mapGrid;
         destination = location;
         targetLocation = tilingSystem.locations[(int)location];
-        //var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         var aStar = new AStarSearch(mapGrid, mapGrid.nodeSet[new Coordinates((int)currentLocation.x, (int)currentLocation.y)], mapGrid.nodeSet[new Coordinates((int)targetLocation.x, (int)targetLocation.y)]);
         currentPath = aStar;
     }
@@ -79,9 +77,13 @@ abstract public class Agent<T> : MonoBehaviour
         mapGrid = tilingSystem.mapGrid;
         destination = tilingSystem.GetTile((int)location.x, (int)location.y).tileType;
         targetLocation = location;
-        //var aStar = new AStarSearch(mapGrid, new Node((int)currentLocation.x, (int)currentLocation.y), new Node((int)targetLocation.x, (int)targetLocation.y));
         var aStar = new AStarSearch(mapGrid, mapGrid.nodeSet[new Coordinates((int)currentLocation.x, (int)currentLocation.y)], mapGrid.nodeSet[new Coordinates((int)targetLocation.x, (int)targetLocation.y)]);
         currentPath = aStar;
+    }
+
+    public void Log(string message)
+    {
+        Debug.Log(agentName + ": " + message);
     }
 
     public virtual void Update()

@@ -17,22 +17,21 @@ public sealed class FightOutlaw : State<Sheriff>
 
     public override void Enter(Sheriff agent)
     {
-        Debug.Log("Sheriff: Time to kill this outlaw!");
+        agent.Log("Time to kill this outlaw!");
     }
 
     public override void Execute(Sheriff agent)
     {
         agent.ShootOutlaw();
-        Debug.Log("Sheriff: I just killed the outlaw!");
-        // TODO: Add extra functions to take outlaw's money, return it to the bank, then go to the saloon
-        Debug.Log("Sheriff: Time to go back to my office!");
-        agent.FindPath(Tiles.SheriffsOffice);
-        agent.nextState = WaitInSheriffOffice.Instance;
+        agent.Log("I just killed the outlaw!");
+        agent.SearchOutlaw();
+        agent.Log("Best get this money back to the bank!");
+        agent.FindPath(Tiles.Bank);
+        agent.nextState = ReturnMoneyToBank.Instance;
         agent.ChangeState(Movement<Sheriff>.Instance);
     }
 
     public override void Exit(Sheriff agent)
     {
-        Debug.Log("Sheriff: Leaving the bank!");
     }
 }

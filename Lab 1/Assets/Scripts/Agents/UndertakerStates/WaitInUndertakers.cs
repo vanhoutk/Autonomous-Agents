@@ -17,17 +17,17 @@ public sealed class WaitInUndertakers : State<Undertaker>
 
     public override void Enter(Undertaker agent)
     {
-        Debug.Log("Undertaker: Back in my office!");
+        agent.Log("Back in my office!");
     }
 
     public override void Execute(Undertaker agent)
     {
         // Wait in office until a "death" causes a state change
-        Debug.Log("Undertaker: Just waiting in my office!");
+        agent.Log("Just waiting in my office!");
     }
 
     public override void Exit(Undertaker agent)
     {
-        Debug.Log("Undertaker: Off to collect a body.");
+        agent.Log("Off to collect a body.");
     }
 }

@@ -17,14 +17,14 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
 
     public override void Enter(Miner agent)
     {
-        Debug.Log("Miner: Walkin' to the gold mine...");
+        agent.Log("Walkin' to the gold mine...");
     }
 
     public override void Execute(Miner agent)
     {
         agent.AddToGoldCarried(1);
         agent.IncreaseFatigue();
-        Debug.Log("Miner: Pickin' up a nugget");
+        agent.Log("Pickin' up a nugget");
         
         if (agent.PocketsFull())
         {
@@ -48,6 +48,6 @@ public sealed class EnterMineAndDigForNugget : State<Miner>
 
     public override void Exit(Miner agent)
     {
-        Debug.Log("Miner: Ah'm leavin' the gold mine with mah pockets full o' sweet gold");
+        agent.Log("Ah'm leavin' the gold mine with mah pockets full o' sweet gold!");
     }
 }

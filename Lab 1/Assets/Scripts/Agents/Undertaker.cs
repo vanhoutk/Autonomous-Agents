@@ -8,7 +8,6 @@ public class Undertaker : Agent<Undertaker>
     private GameObject controller;
     private List<double> thresholds = new List<double> { 10.0, 10.0, 10.0 };
     private List<SenseTypes> modalities = new List<SenseTypes> { SenseTypes.Sight, SenseTypes.Hearing, SenseTypes.Smell };
-    private string agentName = "Under";
 
     // Message Events
     public delegate void BuriedBody(AgentTypes type);
@@ -34,6 +33,8 @@ public class Undertaker : Agent<Undertaker>
 
     public void Awake()
     {
+        agentName = "Mr. Taker";
+
         controller = GameObject.Find("Controller");
         tilingSystem = controller.GetComponent<TilingSystem>();
         senseManager = controller.GetComponent<SenseManager>();
@@ -51,7 +52,7 @@ public class Undertaker : Agent<Undertaker>
         GameObject self = GameObject.Find(agentName);
         if (self != null)
         {
-            senseManager.sensors.Add(new Sensor(AgentTypes.Undertaker, self, modalities, thresholds, agentName));
+            senseManager.sensors.Add(agentName, new Sensor(AgentTypes.Undertaker, self, modalities, thresholds));
             SenseManager.NotifyUndertaker += RespondToSenseEvent;
         }
 
@@ -60,7 +61,7 @@ public class Undertaker : Agent<Undertaker>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        Debug.Log("Undertaker: Oh no, a sense event!");
+        Log("Oh no, a sense event!");
     }
 
     public void BuryBody()
@@ -81,7 +82,7 @@ public class Undertaker : Agent<Undertaker>
 
         if(type == AgentTypes.Outlaw)
         {
-            Debug.Log("Undertaker: The Sheriff has killed the Outlaw!");
+            Log("The Sheriff has killed the Outlaw!");
 
             GameObject outlawObject = GameObject.Find(Outlaw.agentName);
             Outlaw outlaw = outlawObject.GetComponent<Outlaw>();
@@ -91,11 +92,11 @@ public class Undertaker : Agent<Undertaker>
                 ClearCurrentPath();
 
             FindPath(outlaw.currentLocation);
-            Debug.Log("Undertaker: Going to pick up the Outlaw's body!");
+            Log("Going to pick up the Outlaw's body!");
         }
         else
         {
-            Debug.Log("Undertaker: The Outlaw has killed the Sheriff!");
+            Log("The Outlaw has killed the Sheriff!");
             GameObject sheriffObject = GameObject.Find(Sheriff.agentName);
             Sheriff sheriff = sheriffObject.GetComponent<Sheriff>();
 
@@ -104,7 +105,7 @@ public class Undertaker : Agent<Undertaker>
                 ClearCurrentPath();
 
             FindPath(sheriff.currentLocation);
-            Debug.Log("Undertaker: Going to pick up the Sheriff's body!");
+            Log("Going to pick up the Sheriff's body!");
         }
 
         nextState = CollectBody.Instance;

@@ -101,7 +101,7 @@ public class TilingSystem : MonoBehaviour
         {
             for (var x = 0; x < MapSize.x - 1; x++)
             {
-                _map[x, y] = new TileSprite(0, "Unset", defaultImage, Tiles.Unset);
+                _map[x, y] = new TileSprite(FindTile(Tiles.Unset));
             }
         }
 	}
@@ -149,8 +149,6 @@ public class TilingSystem : MonoBehaviour
 
             _map[randomX, randomY] = new TileSprite(FindTile(Tiles.Mountains));
 
-            //mapGrid.mountains.Add(new Node(randomX, randomY));
-
             Coordinates random_coordinates = new Coordinates(randomX, randomY);
             if (mapGrid.nodeSet.ContainsKey(random_coordinates))
                 mapGrid.nodeSet.Remove(random_coordinates);
@@ -175,7 +173,7 @@ public class TilingSystem : MonoBehaviour
             Coordinates rand_coordinates = new Coordinates(randX, randY);
             if (mapGrid.nodeSet.ContainsKey(rand_coordinates))
                 mapGrid.nodeSet.Remove(rand_coordinates);
-            mapGrid.nodeSet.Add(rand_coordinates, new Node(rand_coordinates, tileAttenuationData[i])); // TODO: Need to change the last 4 values to be location dependent
+            mapGrid.nodeSet.Add(rand_coordinates, new Node(rand_coordinates, tileAttenuationData[i])); 
         }
     }
 

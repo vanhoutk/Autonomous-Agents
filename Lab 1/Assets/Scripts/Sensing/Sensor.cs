@@ -5,35 +5,20 @@ public class Sensor
 {
     public AgentTypes agentType;
     public Dictionary<SenseTypes, double> thresholds;
-    public GameObject gameObject; // Can get the transform from this
-    public List<SenseTypes> modalities;
-    public string agentName;
-    //public Vector3 position;
+    public GameObject gameObject;
 
     public bool DetectsModality(SenseTypes modality)
     {
-        if (modalities.Contains(modality))
+        if (thresholds.ContainsKey(modality))
             return true;
         else
             return false;
-        //Agent<agentType> agent = gameObject.GetComponent<Agent<agentType>>();
-        //return true;
     }
 
-    //public void Notify(Signal signal)
-    //{
-    //    if(agentType == AgentTypes.Miner)
-    //    {
-
-    //    }
-    //}
-
-    public Sensor(AgentTypes agentType, GameObject gameObject, List<SenseTypes> modalities, List<double> thresholds, string agentName)
+    public Sensor(AgentTypes agentType, GameObject gameObject, List<SenseTypes> modalities, List<double> thresholds)
     {
         this.agentType = agentType;
         this.gameObject = gameObject;
-        this.modalities = modalities;
-        this.agentName = agentName;
         this.thresholds = new Dictionary<SenseTypes, double>();
         for(int i = 0; i < modalities.Count; i++)
         {

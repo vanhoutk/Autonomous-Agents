@@ -17,26 +17,26 @@ public sealed class LurkInCamp : State<Outlaw>
 
     public override void Enter(Outlaw agent)
     {
-        Debug.Log("Outlaw: Arrived at my camp!");
+        agent.Log("Arrived at my camp!");
     }
 
     public override void Execute(Outlaw agent)
     {
         if (Random.Range(0.0f, 1.0f) < 0.2f)
         {
-            Debug.Log("Outlaw: Gonna go lurk in the cemetery!");
+            agent.Log("Gonna go lurk in the cemetery!");
             agent.FindPath(Tiles.Cemetery);
             agent.nextState = LurkInCemetery.Instance;
             agent.ChangeState(Movement<Outlaw>.Instance);
         }
         else
         {
-            Debug.Log("Outlaw: Just lurking in my camp!");
+            agent.Log("Just lurking in my camp!");
         }
     }
 
     public override void Exit(Outlaw agent)
     {
-        Debug.Log("Outlaw: Leaving my camp...");
+        agent.Log("Leaving my camp...");
     }
 }
