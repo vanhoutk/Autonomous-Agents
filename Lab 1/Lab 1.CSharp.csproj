@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -91,6 +93,7 @@
     <Compile Include="Assets\Scripts\Agents\OutlawStates\OutlawGlobalState.cs" />
     <Compile Include="Assets\Scripts\Agents\OutlawStates\RobBank.cs" />
     <Compile Include="Assets\Scripts\Agents\Sheriff.cs" />
+    <Compile Include="Assets\Scripts\Agents\SheriffStates\ChaseOutlaw.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\CheckLocation.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\FightOutlaw.cs" />
     <Compile Include="Assets\Scripts\Agents\SheriffStates\RelaxInSaloon.cs" />

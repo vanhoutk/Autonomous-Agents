@@ -87,7 +87,7 @@ public class Sheriff : Agent<Sheriff>
 
     public void RespondToSenseEvent(Signal signal)
     {
-        if(signal.senseEvent == SenseEvents.BankRobbery)
+        if(signal.senseEvent == SenseEvents.BankRobbery && isAlive)
         {
             Log("That's the bank alarm!");
 
@@ -125,7 +125,7 @@ public class Sheriff : Agent<Sheriff>
             health = 5;
 
             ChangeLocation(Tiles.SheriffsOffice);
-            ChangeState(WaitInSheriffOffice.Instance);
+            ChangeState(CheckLocation.Instance);
         }
         else
         {

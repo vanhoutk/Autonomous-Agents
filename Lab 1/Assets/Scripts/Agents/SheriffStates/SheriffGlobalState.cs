@@ -35,6 +35,11 @@ public sealed class SheriffGlobalState : State<Sheriff>
 
             if (agent.nextState != FightOutlaw.Instance && agent.stateMachine.GetState() != FightOutlaw.Instance && outlaw.isAlive && agent.isAlive)
             {
+                Vector2 agent_location = (agent.currentLocation - agent.tilingSystem.CurrentPosition) * agent.tilingSystem.tileSize;
+                Vector2 target_location = (outlaw.currentLocation - outlaw.tilingSystem.CurrentPosition) * outlaw.tilingSystem.tileSize;
+                Vector2 direction = target_location - agent_location;
+                RaycastHit2D hit = Physics2D.Raycast(agent_location, direction, 5.0f * agent.tilingSystem.tileSize);
+
                 if (Distance(agent.currentLocation, outlaw.currentLocation) <= 1.0)
                 {
                     agent.YellAtOutlaw();
@@ -43,6 +48,14 @@ public sealed class SheriffGlobalState : State<Sheriff>
                         agent.ClearCurrentPath();
 
                     agent.ChangeState(FightOutlaw.Instance);
+                }
+                else if (hit)
+                {
+                    if (hit.collider.gameObject.name == Outlaw.agentName)
+                    {
+                        agent.Log("I see the outlaw!");
+                        agent.ChangeState(ChaseOutlaw.Instance);
+                    }
                 }
             }
         }

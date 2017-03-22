@@ -87,7 +87,13 @@ public class TilingSystem : MonoBehaviour
 
                 // Set an image for the tile - do this when you create your tile prefabs (for shack, mountains, ...)
                 var renderer = tile.GetComponent<SpriteRenderer>();
-                renderer.sprite = _map[(int)x + (int)CurrentPosition.x, (int)y + (int)CurrentPosition.y].tileImage;
+                TileSprite tile_sprite = _map[(int)x + (int)CurrentPosition.x, (int)y + (int)CurrentPosition.y];
+                renderer.sprite = tile_sprite.tileImage;
+
+                if(tile_sprite.tileType != Tiles.Unset && tile_sprite.tileType != Tiles.Plains && tile_sprite.tileType != Tiles.Cemetery)
+                {
+                    tile.AddComponent<BoxCollider2D>();
+                }
 
                 _tiles.Add(tile);
             }
